@@ -45,6 +45,17 @@ namespace DataAccessLayer
 
             return modelAppts;
         }
+        public void DeleteAppointment(string subject,DateTime date)
+        {
+            Appointment appt = db.Appointments.Where(a => a.Subject == subject && a.StartTime == date).SingleOrDefault();
+            if (appt == null)
+            {
+                
+                throw new Exception(string.Format("record not found for {0}", subject));
+            }
+            db.Appointments.Remove(appt);
+            db.SaveChanges();
+        }
         public void SaveAppts(Models.Appointment appt)
         {
             Appointment apptdb = new Appointment()

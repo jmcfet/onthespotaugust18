@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashBoard", "DashBoard\Dash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DashboardLite", "DashboardLite\DashboardLite.csproj", "{93817216-61E4-448B-94EC-B62DB23DB201}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "Calendar\Calendar.csproj", "{CEAE4A11-A37C-4475-B9D2-4442CFFA783A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scheduler", "scheduler\scheduler.csproj", "{96F5D4DD-83B4-42D2-BC37-76F366BAA447}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{93817216-61E4-448B-94EC-B62DB23DB201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93817216-61E4-448B-94EC-B62DB23DB201}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93817216-61E4-448B-94EC-B62DB23DB201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEAE4A11-A37C-4475-B9D2-4442CFFA783A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEAE4A11-A37C-4475-B9D2-4442CFFA783A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEAE4A11-A37C-4475-B9D2-4442CFFA783A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEAE4A11-A37C-4475-B9D2-4442CFFA783A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

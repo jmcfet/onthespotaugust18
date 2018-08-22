@@ -25,7 +25,7 @@ using System.Windows.Threading;
 namespace BCS
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml  testing
     /// </summary>
     public partial class MainWindow : Window
     {
