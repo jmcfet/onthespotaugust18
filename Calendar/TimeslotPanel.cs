@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 
 namespace OutlookCalendar.Controls
 {
     public class TimeslotPanel : Panel
     {
+        public static readonly RoutedEvent DeleteAppointmentEvent =
+            EventManager.RegisterRoutedEvent("DelteAppointment", RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler), typeof(CalendarAppointmentItem));
+
         #region StartTime
 
         /// <summary>
@@ -92,7 +97,7 @@ namespace OutlookCalendar.Controls
             {
                 Nullable<DateTime> startTime = element.GetValue(TimeslotPanel.StartTimeProperty) as Nullable<DateTime>;
                 Nullable<DateTime> endTime = element.GetValue(TimeslotPanel.EndTimeProperty) as Nullable<DateTime>;
-
+                      
                 double start_minutes = (startTime.Value.Hour * 60) + startTime.Value.Minute;
                 double end_minutes = (endTime.Value.Hour * 60) + endTime.Value.Minute;
                 double start_offset = (finalSize.Height / (24 * 60)) * start_minutes;
@@ -104,9 +109,11 @@ namespace OutlookCalendar.Controls
                 height = (end_offset - start_offset)-2;
 
                 element.Arrange(new Rect(left, top, width, height));
+               
             }
 
             return finalSize;
         }
+       
     }
 }

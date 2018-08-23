@@ -34,6 +34,7 @@ namespace scheduler
         bool superuser = false;
         private DispatcherTimer DateChanging;
         private DateTime _yesturday = DateTime.Today;
+        bool editMode = false;
         //   ObservableCollection<DataAccessLayer.Models.Appointment> events;
         public Sched()
         {
@@ -133,14 +134,25 @@ namespace scheduler
         //for the selected day and show appointments if there are any
         private void dayevent_Click(object sender, RoutedEventArgs e)
         {
-
+            
+            
             DateTime thisDate = (DateTime)(sender as mybutton).Date;
             cal.Appointments = allAppts;   //set control appointments to all as it will filter
             //currentdate is a dependency property on the calendar that will cause filtering by CurrentDate
             cal.CurrentDate = thisDate;
-            cal.Visibility = Visibility.Visible;
-            future.Visibility = Visibility.Collapsed;
-
+            if (!editMode)
+            {
+                cal.Visibility = Visibility.Visible;
+                future.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                List<DataAccessLayer.Models.Appointment> temp = allAppts.Where(a => a.StartTime.ToShortDateString() == thisDate.ToShortDateString()).ToList();
+                ObservableCollection<DataAccessLayer.Models.Appointment>  apptsforDate = new ObservableCollection<DataAccessLayer.Models.Appointment>(temp);
+                lvDataBinding.ItemsSource = apptsforDate;
+              
+                head.Text = thisDate.DayOfWeek.ToString() + " " + thisDate.Day.ToString();
+            }
         }
 
         private void Calendar_AddAppointment(object sender, RoutedEventArgs e)
@@ -175,9 +187,7 @@ namespace scheduler
             if (about1.worked == true)
             { 
                 superuser = true;
-               if (today.Count > 0)
-                   
-                    Delete.Visibility = Visibility.Visible;
+                EditMode.Visibility = Visibility.Visible;
                 login.Source = new BitmapImage(new Uri("Superman_shield.svg.png", UriKind.Relative));
                 populateRightPane();
             }
@@ -205,11 +215,33 @@ namespace scheduler
                 toRemove.Add(appt);
             }
             toRemove.ForEach(t => today.Remove(t));
+            toRemove.ForEach(t => allAppts.Remove(t));
+            
+            lvDataBinding.SelectedItems.Clear();
             //we might have added an appointment for today so refresh the left side
             //  List<DataAccessLayer.Models.Appointment> revisedAppts = allAppts.Where(a => a.StartTime.ToShortDateString() == DateTime.Now.ToShortDateString()).ToList();
-          
+
             lvDataBinding.ItemsSource = today;
             cal.Appointments = today;
+        }
+
+        private void EditMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditMode.Content.ToString() == "OFF")
+            {
+                Delete.Visibility = Visibility.Hidden;
+                EditMode.Content = "Edit";
+                editMode = false;
+                //restore todaylv
+                lvDataBinding.ItemsSource = today;
+                head.Text = "Today";
+            }
+            else
+            {
+                Delete.Visibility = Visibility.Visible;
+                EditMode.Content = "OFF";
+                editMode = true;
+            }
         }
     }
     class mybutton:Button

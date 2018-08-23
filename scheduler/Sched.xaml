@@ -69,16 +69,20 @@
                     <ColumnDefinition Width="11*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>  
             
-                <TextBlock  Grid.Column="0"  FontSize="20" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" >Today</TextBlock>
-                <Button Grid.Column="2"  Height="30" Click="LoginButton_Click" >
+                <TextBlock Name="head" Grid.Column="0"  FontSize="20" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" >Today</TextBlock>
+                <Button Grid.Column="3"  Height="30" Click="LoginButton_Click" >
                     <Image x:Name="login" Source="login-system-icon-13.png">
                     </Image>
                 </Button>
                 <Button Name="Delete" Grid.Column="1"  Height="30" Click="Delete_Click" Visibility="Hidden">
                     <Image x:Name="login1" Source="close-octagon.png">
                     </Image>
+                </Button>
+                <Button Name="EditMode" Grid.Column="2"  Height="30" Content="Edit" Click="EditMode_Click"  Visibility="Hidden">
+                   
                 </Button>
             </Grid>
             <Grid Grid.Row="1" Name="todayevents" Background="LightGray" >

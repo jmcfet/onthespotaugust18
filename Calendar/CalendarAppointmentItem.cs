@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -14,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace OutlookCalendar.Controls
 {      
-    public class CalendarAppointmentItem : ContentControl
+    public class CalendarAppointmentItem : ButtonBase
     {    
         static CalendarAppointmentItem()
         {
@@ -43,6 +44,16 @@ namespace OutlookCalendar.Controls
 
         #endregion
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            UIElement container = VisualTreeHelper.GetParent(this) as UIElement;
+            Point relativeLocationInContainer = this.TranslatePoint(new Point(0, 0), container);
+            //find the timeslot that was clicked (44 is fixed height of item)
+            //Hour = relativeLocationInContainer.Y / 44;
 
+            //RaiseAddAppointmentEvent();
+
+
+        }
     }
 }

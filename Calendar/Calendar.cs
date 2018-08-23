@@ -15,6 +15,7 @@ using DataAccessLayer.Models;
 
 namespace OutlookCalendar.Controls
 {
+    
     public class Calendar : Control
     {
         static Calendar()
@@ -106,7 +107,7 @@ namespace OutlookCalendar.Controls
         }
 
         #endregion
-
+        
         private void FilterAppointments()
         {   
             DateTime byDate = CurrentDate;

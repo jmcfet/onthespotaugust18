@@ -201,14 +201,14 @@
                             </Grid.RowDefinitions>
 
 
-                            
+
 
                             <Button Height="25" Width="25" Grid.Row="0" Grid.Column="0" Command="{x:Static local:Calendar.Back}" Background="{x:Null}" BorderBrush="{x:Null}">
                                 <Image Source="pack://application:,,,/Calendar;component/Images/Previous.png" />
-                                
-                                </Button>
-                             
-                           
+
+                            </Button>
+
+
                             <Border BorderBrush="#6593CF" BorderThickness="0,0,1,1" Grid.Column="0" Grid.Row="1" />
                             <Border BorderBrush="#6593CF" BorderThickness="0,1,0,1" Background="#30000000" Grid.Column="1" Grid.Row="1">
                                 <TextBlock Text="{TemplateBinding CurrentDate}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="dayHeader" />
