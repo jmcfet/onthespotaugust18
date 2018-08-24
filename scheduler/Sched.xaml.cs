@@ -217,7 +217,7 @@ namespace scheduler
             toRemove.ForEach(t => today.Remove(t));
             toRemove.ForEach(t => allAppts.Remove(t));
             
-            lvDataBinding.SelectedItems.Clear();
+            
             //we might have added an appointment for today so refresh the left side
             //  List<DataAccessLayer.Models.Appointment> revisedAppts = allAppts.Where(a => a.StartTime.ToShortDateString() == DateTime.Now.ToShortDateString()).ToList();
 

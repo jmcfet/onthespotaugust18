@@ -238,9 +238,10 @@ namespace DataAccessLayer
         }
         public List<ShirtInfo> getItemCount(string type, int plusdays)
         {
+            
             DateTime dueDate = DateTime.Now.AddDays(plusdays);
-            if (dueDate.DayOfWeek == DayOfWeek.Friday)    //if Friday move to Monday      
-                dueDate.AddDays(2);
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)    //if Friday move to Monday      
+                dueDate = dueDate.AddDays(2);
             List<int> ids = (from cat in dbBCS.Categories
                              where cat.Name == type
                              join fab in dbBCS.OTISIdsToFabIds on cat.ID equals fab.CatID
