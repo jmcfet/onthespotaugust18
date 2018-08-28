@@ -35,6 +35,7 @@ namespace scheduler
         private DispatcherTimer DateChanging;
         private DateTime _yesturday = DateTime.Today;
         bool editMode = false;
+        mybutton selectedDayButton = null;
         //   ObservableCollection<DataAccessLayer.Models.Appointment> events;
         public Sched()
         {
@@ -88,7 +89,7 @@ namespace scheduler
                     dayevent.Foreground = new SolidColorBrush(Colors.Red);
                 future.Children.Add(dayevent);
             }
-            if (superuser)
+            if (superuser)  //if super user then add button to select a date
             {
 
                 mybutton dayevent = new mybutton();
@@ -131,11 +132,12 @@ namespace scheduler
             future.Visibility = Visibility.Visible;
         }
         //the user has clicked on a day in the right grid. open a day scheuduler
-        //for the selected day and show appointments if there are any
+        //for the selected day and show appointments if there are any except if in edit mode
+        //then we show all appts for the selected day in left side so the user can delete events
         private void dayevent_Click(object sender, RoutedEventArgs e)
         {
-            
-            
+
+            selectedDayButton = sender as mybutton;
             DateTime thisDate = (DateTime)(sender as mybutton).Date;
             cal.Appointments = allAppts;   //set control appointments to all as it will filter
             //currentdate is a dependency property on the calendar that will cause filtering by CurrentDate
@@ -148,8 +150,8 @@ namespace scheduler
             else
             {
                 List<DataAccessLayer.Models.Appointment> temp = allAppts.Where(a => a.StartTime.ToShortDateString() == thisDate.ToShortDateString()).ToList();
-                ObservableCollection<DataAccessLayer.Models.Appointment>  apptsforDate = new ObservableCollection<DataAccessLayer.Models.Appointment>(temp);
-                lvDataBinding.ItemsSource = apptsforDate;
+                today = new ObservableCollection<DataAccessLayer.Models.Appointment>(temp);
+                lvDataBinding.ItemsSource = today;
               
                 head.Text = thisDate.DayOfWeek.ToString() + " " + thisDate.Day.ToString();
             }
@@ -214,13 +216,18 @@ namespace scheduler
                 dbAccess.DeleteAppointment(appt.Subject,appt.StartTime);
                 toRemove.Add(appt);
             }
-            toRemove.ForEach(t => today.Remove(t));
             toRemove.ForEach(t => allAppts.Remove(t));
+            toRemove.ForEach(t => today.Remove(t));
+            if (today.Count == 0)
+            {
+               
+                if (selectedDayButton != null)
+                    selectedDayButton.Foreground = new SolidColorBrush(Colors.Black);
+                     
+            }
             
-            
-            //we might have added an appointment for today so refresh the left side
-            //  List<DataAccessLayer.Models.Appointment> revisedAppts = allAppts.Where(a => a.StartTime.ToShortDateString() == DateTime.Now.ToShortDateString()).ToList();
 
+            //we deleted an appointment for today so refresh the left side
             lvDataBinding.ItemsSource = today;
             cal.Appointments = today;
         }

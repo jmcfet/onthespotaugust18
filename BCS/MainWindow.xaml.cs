@@ -32,6 +32,7 @@ namespace BCS
         BCSandGSSVM vm;
         static InterfaceKit ifKit;
         DispatcherTimer PhigTimer;
+        DispatcherTimer batchTimer = new DispatcherTimer();
         Cursor oldcursor = null;
         Logger logger = LogManager.GetLogger("BCS");
        
@@ -59,6 +60,9 @@ namespace BCS
             PhigTimer.Interval = TimeSpan.FromSeconds(5);
             PhigTimer.Tick += new EventHandler(timer_Tick);
             PhigTimer.Start();
+            batchTimer.Interval = TimeSpan.FromSeconds(30);
+            batchTimer.Tick += BatchTimer_Tick;
+           
             ifKit = new InterfaceKit();
 
             //Hook the basica event handlers
@@ -71,7 +75,18 @@ namespace BCS
             DataContext = vm;
            
         }
-       
+
+        private void BatchTimer_Tick(object sender, EventArgs e)
+        {
+            vm.BatchButtonText = "Batch On";
+            BatchOff();
+            ButRow1.Children.Clear();
+            ButRow2.Children.Clear();
+            ReClassify.Visibility = Visibility.Visible;
+            QuickReClassify.Visibility = Visibility.Visible;
+            CustomerNote.Visibility = Visibility.Hidden;
+        }
+
         //for the system to be totally operational we must get a response from the controller and
         //have database connectivity. If we have just database working then allow degraded operation
         void timer_Tick(object sender, EventArgs e)
@@ -261,7 +276,13 @@ namespace BCS
             {
                 vm.BatchButtonText = "Batch Off";
                 vm.bSimulatePhigetsMode = true;
-             
+                batchTimer.Start();
+                BatchOff();
+                ButRow1.Children.Clear();
+                ButRow2.Children.Clear();
+                ReClassify.Visibility = Visibility.Visible;
+                QuickReClassify.Visibility = Visibility.Visible;
+                CustomerNote.Visibility = Visibility.Hidden;
                 Barcode.IsEnabled = false;
                 ShowCategoryButtons();
                 Errormsg.Text = "select a bin";
@@ -421,7 +442,11 @@ namespace BCS
             if (!ProcessBarcode())
                 return;
             string barcode = Barcode.Text;
-
+            if (vm.BatchButtonText == "Batch Off")
+            {
+                batchTimer.Stop();
+                batchTimer.Start();
+            }
             //check that the item is in the Assembly database if not then show message and allow more items
             //to be scanned
             try
