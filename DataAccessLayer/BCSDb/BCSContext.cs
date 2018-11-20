@@ -23,7 +23,7 @@ namespace DataAccessLayer
         public virtual DbSet<NoteForCustomer> CustomerNotes { get; set; }
         public virtual DbSet<Printer> Printers { get; set; }
         public virtual DbSet<QCSInfo> QCSInfoes { get; set; }
-
+        public virtual DbSet<User> Users { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()
