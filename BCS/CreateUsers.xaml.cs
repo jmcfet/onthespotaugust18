@@ -83,7 +83,7 @@ namespace BCS
             UserInfo.Visibility = Visibility.Visible;
             Delete.Visibility = Visibility.Visible;
         }
-
+        //delete a user
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             User user1 = users.Where(u => u.Name == Name.Text).SingleOrDefault();
