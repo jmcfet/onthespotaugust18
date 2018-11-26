@@ -98,7 +98,7 @@ namespace BCS
             Delete.Visibility = Visibility.Hidden;
             Name.Text = "";
         }
-
+        //test
         private void Done_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
