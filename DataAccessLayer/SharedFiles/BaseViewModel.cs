@@ -162,7 +162,19 @@ namespace OnTheSpot.ViewModels
            
         }
 
+        public List<User> GetUsers()
+        {
+            return db.GetUsers();
+        }
 
+        public void Saveuser(User user)
+        {
+            db.SaveUser(user);
+        }
+        public void Deleteuser(User user)
+        {
+            db.DeleteUser(user);
+        }
 
         public void GetOurEntities()
         {

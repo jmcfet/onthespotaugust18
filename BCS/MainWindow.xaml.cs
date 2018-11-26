@@ -47,10 +47,8 @@ namespace BCS
             
             vm =  new BCSandGSSVM(true);
             this.Title = "On the Spot BCS";
-            passwordBox1.Visibility = Visibility.Visible;
-            label4.Visibility = Visibility.Visible;
             label1.Visibility = Visibility.Visible;
-            passwordEntered.Visibility = Visibility.Visible;
+            
             led1.Visibility = Visibility.Visible;
            
             vm.bControllerOn = false;
@@ -196,36 +194,42 @@ namespace BCS
 
         private void version_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("On The Spot BCS version 1.8 Jan 1 2018");
+            MessageBox.Show("On The Spot BCS version 2.0 nov 21 2018");
         }
 
-        private void passwordEntered_Click(object sender, RoutedEventArgs e)
+        private void Login_Click(object sender, RoutedEventArgs e)
         {
-            string pass = passwordBox1.Password;
-            passwordBox1.Password = string.Empty;
-            if (pass == "tennis")
-            {
-                vm.bLoggedIn = true;
-
+           
+            Login login = new Login(vm);
+            login.ShowDialog();
+            vm.bLoggedIn = true;
+            if (vm.UserLevel == 1 || vm.UserLevel == 2)
+            { 
                 vm.ClassifyButtonText = "Admin Off";
                 vm.ReClassifyButtonText = "ReClassify On";
                 vm.QuickReClassifyButtonText = "Quick reclassify On";
                 vm.BatchButtonText = "Batch On";
-                BatchBCS.Visibility = Visibility.Visible;
-                QuickReClassify.Visibility = Visibility.Visible;
-                Classify.Visibility = Visibility.Visible;
-                if (ifKit == null)
-                    ifKit = new Phidgets.InterfaceKit();
-
-                vm.bControllerOn = false;
-                logger.Info("BCS start");
-                ReClassify.Visibility = Visibility.Visible;
-
-                SetFocusBarcode();
-
-
+                container.Visibility = Visibility.Visible;
             }
+            if (vm.UserLevel == 1)
+                UserAdmin.Visibility  = Visibility.Visible;
+           
+            
 
+            //if (ifKit == null)
+            //    ifKit = new Phidgets.InterfaceKit();
+
+            vm.bControllerOn = false;
+            logger.Info("BCS start");
+            ReClassify.Visibility = Visibility.Visible;
+
+            SetFocusBarcode();
+
+        }
+        private void UserAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            CreateUsers dlg = new CreateUsers(vm);
+            dlg.ShowDialog();
         }
         private void Classify_Click(object sender, RoutedEventArgs e)
         {

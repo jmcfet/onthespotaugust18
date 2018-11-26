@@ -69,6 +69,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CreateUsers.xaml.cs">
+      <DependentUpon>CreateUsers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BCSVM.cs" />
     <Compile Include="Views\ItemImage.xaml.cs">
       <DependentUpon>ItemImage.xaml</DependentUpon>
@@ -79,6 +85,14 @@
     <Compile Include="Views\NoteContent.xaml.cs">
       <DependentUpon>NoteContent.xaml</DependentUpon>
     </Compile>
+    <Page Include="CreateUsers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

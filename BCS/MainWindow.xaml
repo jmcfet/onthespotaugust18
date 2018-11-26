@@ -6,7 +6,7 @@
          xmlns:uc="clr-namespace:LedControl;assembly=Led"
         xmlns:local="clr-namespace:BCS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="brushWatermarkBackground" Color="White" />
@@ -51,17 +51,19 @@
                 <uc:Led x:Name="led1" Flashing="False" FlashingPeriod="500" ColorNull="Gray" ColorOn="Green" ColorOff="Red"  Visibility="Collapsed" />
                 <Label Content="Database" FontSize="15" Height="31" Name="label2" Width="73" />
                 <uc:Led x:Name="led2"  ColorNull="Gray" ColorOn="Green" ColorOff="Red" ></uc:Led>
-                <Label Content="Password" Height="31" Name="label4" Width="75"  FontSize="15" Visibility="Collapsed"/>
-                <PasswordBox  Height="23" Name="passwordBox1" Width="120" Visibility="Collapsed"/>
-                <Button Content=">" Height="21" Name="passwordEntered" Width="36"  Click="passwordEntered_Click" Visibility="Collapsed"/>
 
-                <Button Content="{Binding ClassifyButtonText}" Height="40" Name="Classify" Visibility="Collapsed" Width="77" Margin="12" Click="Classify_Click"/>
-                <Button Content="{Binding ReClassifyButtonText}" Height="40" Name="ReClassify" Visibility="Collapsed" Width="88" Click="Reclassify_click" />
-                <Button Content="{Binding QuickReClassifyButtonText}" Height="40" Name="QuickReClassify" Visibility="Collapsed" Width="120" Click="QickClassify_Click"/>
-                <Button Content="{Binding BatchButtonText}" Height="40" Name="BatchBCS" Visibility="Collapsed" Width="120" Click="BatchBCS_Click"/>
-                <!--<Button Content="Get Picture" Height="40" Name="TakePic" Margin="12 0"  Visibility="{Binding BarcodeEntered, Converter={StaticResource BooleanToVisibilityConverter}}" Width="120" Click="TakePic_Click"/>
+                <Button Content="Login" Height="30" Name="Login" Width="43"  Click="Login_Click" Visibility="Visible" Margin="0,10"/>
+                <Button Content="User Admin" Height="30" Name="UserAdmin" Width="70" Margin="5" Click="UserAdmin_Click" Visibility="Hidden" />
+
+                <StackPanel Name="container" Height="30" Width="427" Orientation="Horizontal" Margin="0,10" Visibility="Hidden" >
+                    <Button Content="{Binding ClassifyButtonText}"  Name="Classify" Visibility="Visible" Width="77"  Click="Classify_Click"/>
+                    <Button Content="{Binding ReClassifyButtonText}"  Name="ReClassify" Visibility="Visible" Width="88" Click="Reclassify_click" />
+                    <Button Content="{Binding QuickReClassifyButtonText}"  Name="QuickReClassify" Visibility="Visible" Width="120" Click="QickClassify_Click"/>
+                    <Button Content="{Binding BatchButtonText}"  Name="BatchBCS" Visibility="Visible" Width="120" Click="BatchBCS_Click"/>
+                    <!--<Button Content="Get Picture" Height="40" Name="TakePic" Margin="12 0"  Visibility="{Binding BarcodeEntered, Converter={StaticResource BooleanToVisibilityConverter}}" Width="120" Click="TakePic_Click"/>
                 <Button Content="Save Picture" Height="40" Name="SavePic" Visibility="{Binding bGotNewImage, Converter={StaticResource BooleanToVisibilityConverter}}" Width="120" Click="SavePic_Click"/>-->
-                <Button Content="Version" Height="21" Name="version" Width="67" Margin="12" Click="version_Click" />
+                </StackPanel>
+
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">

@@ -116,6 +116,21 @@ namespace DataAccessLayer
             return modelCats;
         }
 
+        public List<User> GetUsers()
+        {
+            return db.Users.ToList();
+        }
+
+        public void SaveUser(User user)
+        {
+            db.Users.Add(user);
+            db.SaveChanges();
+        }
+        public void DeleteUser(User user)
+        {
+            db.Users.Remove(user);
+            db.SaveChanges();
+        }
 
         public OnTheSpot.Models.Item getItem(string barcode)
         {
