@@ -199,16 +199,17 @@ namespace BCS
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-           
-            Login login = new Login(vm);
-            login.ShowDialog();
-            vm.bLoggedIn = true;
             if (Login.Content as String == "Logout")
             {
                 Login.Content = "Login";
                 container.Visibility = Visibility.Collapsed;
+                UserAdmin.Visibility = Visibility.Collapsed;
                 return;
             }
+            Login login = new Login(vm);
+            login.ShowDialog();
+            vm.bLoggedIn = true;
+           
             if (vm.UserLevel == 1 || vm.UserLevel == 2)
             {
                 Login.Content = "Logout";

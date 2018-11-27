@@ -28,6 +28,7 @@ namespace BCS
             this.vm = vm;
             InitializeComponent();
             users = vm.GetUsers();
+            users = users.Where(u => u.Level == 2).ToList();
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
@@ -57,6 +58,7 @@ namespace BCS
                 user.Level = 2;
                 vm.Saveuser(user);
             }
+            users.Add(user);
             UserInfo.Visibility = Visibility.Hidden;
             PassInfo.Visibility = Visibility.Hidden;
             Create.Visibility = Visibility.Hidden;
@@ -76,27 +78,32 @@ namespace BCS
             UserInfo.Visibility = Visibility.Visible;
             PassInfo.Visibility = Visibility.Visible;
             Create.Visibility = Visibility.Visible;
+            listUsers.Visibility = Visibility.Hidden;
+            Delete.Visibility = Visibility.Hidden;
+            Name.Focus();
         }
 
         private void DeleteUser_Click(object sender, RoutedEventArgs e)
         {
-            UserInfo.Visibility = Visibility.Visible;
+            listUsers.Visibility = Visibility.Visible;
             Delete.Visibility = Visibility.Visible;
+            listUsers.DataContext = users;
         }
         //delete a user
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            User user1 = users.Where(u => u.Name == Name.Text).SingleOrDefault();
+            User user1 = listUsers.SelectedItem as User;
+
+      //      User user1 = users.Where(u => u.Name == Name.Text).SingleOrDefault();
             if (user1 == null)
             {
                 MessageBox.Show("User does not exist");
                 return;
             }
             vm.Deleteuser(user1);
-            UserInfo.Visibility = Visibility.Hidden;
-            PassInfo.Visibility = Visibility.Hidden;
-            Delete.Visibility = Visibility.Hidden;
-            Name.Text = "";
+            users.Remove(user1);
+            listUsers.ItemsSource = null;
+            listUsers.ItemsSource = users;
         }
         //test
         private void Done_Click(object sender, RoutedEventArgs e)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BCS"
         mc:Ignorable="d"
-        Title="CreateUsers" Height="450" Width="500">
+        Title="Administer Level 2 Users" Height="450" Width="500">
     <Grid>
          <Button Content="Create User" Name="CreateUser" HorizontalAlignment="Left" Margin="32,21,0,0" VerticalAlignment="Top" Width="108" Click="CreateUser_Click" Height="40"/>
         <Button Content="Cancel" x:Name="Cancel" HorizontalAlignment="Left" Margin="288,232,0,0" VerticalAlignment="Top" Width="101" Click="Cancel_Click" Height="40" Visibility="Hidden"/>
@@ -15,13 +15,23 @@
             <TextBox x:Name="Name" HorizontalAlignment="Left" Height="29"  TextWrapping="Wrap" VerticalAlignment="Top" Width="129"/>
         </StackPanel>
         <StackPanel Name="PassInfo" HorizontalAlignment="Left" Height="43" Margin="47,148,0,0" VerticalAlignment="Top" Width="307" Orientation="Horizontal" Visibility="Hidden">
-            <Label Content="password" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0,0.346" Width="113" Height="29"/>
-            <TextBox x:Name="Password" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
+            <Label Content="password" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0,0.346" Width="95" Height="29"/>
+            <TextBox x:Name="Password" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="191"/>
 
         </StackPanel>
-        <Button Content="Delete" Name="Delete" Margin="354,102,60,0" VerticalAlignment="Top" Visibility="Hidden" Click="Delete_Click"/>
+      
+        <Button Content="Delete" Name="Delete" Margin="354,165,60,0" VerticalAlignment="Top" Visibility="Hidden" Click="Delete_Click"/>
         <Button Content="Create" x:Name="Create" HorizontalAlignment="Left" Margin="77,232,0,0" VerticalAlignment="Top" Width="101" Click="Create_Click" Visibility="Hidden" Height="40"/>
         <Button Content="Done" Name="Done" HorizontalAlignment="Left" Margin="380,30,0,0" VerticalAlignment="Top" Width="75" Click="Done_Click" />
-
+        <ListBox Name="listUsers" HorizontalAlignment="Left" ItemsSource="{Binding}" Height="100" Margin="159,148,0,0" VerticalAlignment="Top" Width="129" Visibility="Hidden">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    
+                       
+                        <TextBlock Text="{Binding Name}" Margin="2" />
+                                            
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

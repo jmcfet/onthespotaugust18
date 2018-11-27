@@ -28,7 +28,13 @@ namespace BCS
             this.vm = vm;
             users = vm.GetUsers();
             InitializeComponent();
-        } 
+            Loaded += Login_Loaded;
+        }
+
+        private void Login_Loaded(object sender, RoutedEventArgs e)
+        {
+            Name.Focus();
+        }
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
