@@ -149,7 +149,7 @@ namespace BCS
             vm.OpenBCSandStoreDB();
             vm.OpenAssemblyDB();
             vm.GetOurEntities();
-            
+            Login.Visibility = Visibility.Visible;
 
 
             this.Dispatcher.Invoke(new Action(delegate ()     //use dispatcher to update UI
@@ -203,15 +203,22 @@ namespace BCS
             Login login = new Login(vm);
             login.ShowDialog();
             vm.bLoggedIn = true;
+            if (Login.Content as String == "Logout")
+            {
+                Login.Content = "Login";
+                container.Visibility = Visibility.Collapsed;
+                return;
+            }
             if (vm.UserLevel == 1 || vm.UserLevel == 2)
-            { 
-                vm.ClassifyButtonText = "Admin Off";
+            {
+                Login.Content = "Logout";
+            //    vm.ClassifyButtonText = "Admin Off";
                 vm.ReClassifyButtonText = "ReClassify On";
                 vm.QuickReClassifyButtonText = "Quick reclassify On";
                 vm.BatchButtonText = "Batch On";
                 container.Visibility = Visibility.Visible;
             }
-            if (vm.UserLevel == 1)
+            if (vm.UserLevel == 1)   //only super users can create new users
                 UserAdmin.Visibility  = Visibility.Visible;
            
             
@@ -231,13 +238,7 @@ namespace BCS
             CreateUsers dlg = new CreateUsers(vm);
             dlg.ShowDialog();
         }
-        private void Classify_Click(object sender, RoutedEventArgs e)
-        {
-            vm.bLoggedIn = false;
-            ReClassify.Visibility = Visibility.Collapsed;
-            Classify.Visibility = Visibility.Collapsed;
-            QuickReClassify.Visibility = Visibility.Collapsed;
-        }
+       
         //allows admin person to reclassify without BCS feedback
         private void QickClassify_Click(object sender, RoutedEventArgs e)
         {
