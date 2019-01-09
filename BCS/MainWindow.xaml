@@ -6,7 +6,7 @@
          xmlns:uc="clr-namespace:LedControl;assembly=Led"
         xmlns:local="clr-namespace:BCS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" >
+        Title="MainWindow" Height="800"  >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="brushWatermarkBackground" Color="White" />
@@ -52,7 +52,7 @@
                 <Label Content="Database" FontSize="15" Height="31" Name="label2" Width="73" />
                 <uc:Led x:Name="led2"  ColorNull="Gray" ColorOn="Green" ColorOff="Red" ></uc:Led>
 
-                <Button Content="Login" Height="30" Name="Login" Width="43"  Click="Login_Click" Visibility="Hidden" Margin="5"/>
+                <Button Content="Login" Height="30" Name="Login" Width="100"  Click="Login_Click" Visibility="Hidden" Margin="5"/>
                 <Button Content="User Admin" Height="30" Name="UserAdmin" Width="70" Margin="5" Click="UserAdmin_Click" Visibility="Hidden" />
 
                 <StackPanel Name="container" Height="30" Width="427" Orientation="Horizontal" Margin="0,10" Visibility="Hidden" >
@@ -85,7 +85,7 @@
                     <TextBlock Height="33" HorizontalAlignment="Center" Margin="3,6,0,0" Name="Errormsg" Text="Please place item in right bin" FontSize="20"  VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap"  />
                 </Grid>
 
-                <Grid  HorizontalAlignment="Stretch" Grid.Row="1" Name="TopGrid" VerticalAlignment="Top" Visibility="Hidden" >
+                <Grid  HorizontalAlignment="Stretch" Grid.Row="1" Name="TopGrid" VerticalAlignment="Top" Visibility="Visible" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="96*"></ColumnDefinition>
                         <ColumnDefinition Width="116*"></ColumnDefinition>
@@ -129,8 +129,10 @@
                         <TextBlock Text="Failed" Height="20" Background="Red"></TextBlock>
                         <ListBox  ItemsSource="{Binding errorcodes}" Width="250" Margin="0,5,0,10"  Background="Azure"  />
                     </StackPanel>
-                    <Button Content="Clear" Grid.Column="3" Grid.Row="3" Height="30" HorizontalAlignment="Left" Margin="34,4,0,0" Name="Cleartext" VerticalAlignment="Top" Width="47" Click="Cleartext_Click" />
-                    <Button Content="Note" Grid.Column="4" Grid.Row="3" Height="30" HorizontalAlignment="Left" Margin="34,4,0,0" Name="NoteButton" VerticalAlignment="Top" Width="55" Click="Note_Click" Visibility="Hidden"/>
+                    <Button Content="Clear" Grid.Column="3" Grid.Row="3" Height="30" HorizontalAlignment="Left" Margin="8,4,0,0" Name="Cleartext" VerticalAlignment="Top" Width="47" Click="Cleartext_Click" RenderTransformOrigin="0.021,0.667" />
+                    <Button Content="Note" Grid.Column="3" Grid.Row="3" Height="30" HorizontalAlignment="Right" Margin="8,4,0,0" Name="NoteButton" VerticalAlignment="Top" Width="55" Click="Note_Click" Visibility="Collapsed"/>
+                    <TextBlock Background="White" Grid.Column="4" Grid.Row="2" Height="30" HorizontalAlignment="Left" TextAlignment="Center" Margin="5"  x:Name="userName"  Width="110"  Visibility="Collapsed"/>
+                    <TextBlock Background="White" Grid.Column="4" Grid.Row="3" Height="30" HorizontalAlignment="Left" TextAlignment="Center" Margin="5" x:Name="ClassedDate"  Width="110"  Visibility="Collapsed"/>
                 </Grid>
 
                 <Grid  Grid.Row="2" HorizontalAlignment="Stretch"  Name="grid1" VerticalAlignment="Top" Visibility="Hidden">
@@ -150,10 +152,11 @@
                     <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" FontSize="25"  Foreground="White" Text="Do something ffsdfff"   Name="Action" VerticalAlignment="Top" Grid.Column="1" />
                     <Button Content="Done" Grid.Row="2" HorizontalAlignment="Center"  Name="Wizard" VerticalAlignment="Top" Width="60" Click="Next_Click" Grid.Column="4" Height="33" />
                     <Button Content="Cancel" Grid.Row="2" HorizontalAlignment="Center"  Name="Cancel" VerticalAlignment="Top" Width="60" Click="Cancel_Click" Grid.Column="5" Height="33" />
-
+                  
 
 
                 </Grid>
+                
 
 
 

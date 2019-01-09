@@ -52,6 +52,7 @@ namespace BCS
             if (user1 != null)
             {
                 MessageBox.Show("User already exists");
+                return;
             }
             else
             {

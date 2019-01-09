@@ -27,5 +27,6 @@ namespace DataAccessLayer
         public string picture { get; set; }
 
         public virtual Category Category { get; set; }
+        public virtual User User { get; set; }
     }
 }

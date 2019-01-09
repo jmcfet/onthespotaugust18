@@ -30,8 +30,9 @@ namespace QCS
         QSSVM vm = new QSSVM();
         List<string> testCodes = new List<string>() { "1000492087", "1000508922", "1000446918", "1000446917", "1000446916", "1000446915", "1000446914" };
         int dumcode = 0;
-        List<string> buttonLabels = new List<string>() { "Spots", "Repairs/Buttons", "Repressing" };
+        List<string> buttonLabels = new List<string>() { "Spots", "Repairs/Buttons", "Repressing","Cleaner Station" };
         int BarcodeChars = 0;
+        DispatcherTimer timer1 = null;
         DispatcherTimer timer2 = null;
         string employeeID;
         bool bClearPressed = false;
@@ -53,7 +54,8 @@ namespace QCS
             vm.OpenAssemblyDB();
             this.Title = "On the Spot QCS";
             int i = 0;
-            Note.Visibility = Visibility.Visible;
+            //Note.Visibility = Visibility.Visible;
+            //Totals.Visibility = Visibility.Visible;
             if (vm.GetShowPass() == 1)
             {
                 ShowPass.Content = "Hide pass";
@@ -69,11 +71,15 @@ namespace QCS
                 }
                 i++;
             }
-            //if (vm.GetShowPass() == 1)    later
-            //    PassButton.Visibility = Visibility.Visible;
+            if (vm.GetShowPass() == 1)
+                PassButton.Visibility = Visibility.Visible;
             timer2 = new DispatcherTimer();
             timer2.Interval = TimeSpan.FromSeconds(1);
             timer2.Tick += new EventHandler(timer2_Tick);
+            timer1 = new DispatcherTimer();
+            timer1.Interval = TimeSpan.FromSeconds(30);
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Start();
             EmployeeID.Focus();
             Barcode.TextChanged += new TextChangedEventHandler(Barcode_TextChanged);
            
@@ -118,8 +124,26 @@ namespace QCS
             BarcodeChars++;
 
         }
-        //only this timer is operation now
-        void timer2_Tick(object sender, EventArgs e)
+        void timer1_Tick(object sender, EventArgs e)
+        {
+            int i = 0;
+            foreach (object but in buttonsContainer.Children)
+            {
+
+                Button button = but as Button;
+                if (i < buttonLabels.Count)
+                {
+                    button.Visibility = Visibility.Visible;
+                    List<DataAccessLayer.QCSInfo> qcs = vm.GetQCSTotal(buttonLabels[i]);
+                    button.Content = buttonLabels[i] + "(" +  qcs.Count().ToString() + ")";
+                }
+                i++;
+            }
+            
+            
+        }
+            //only this timer is operation now
+         void timer2_Tick(object sender, EventArgs e)
         {
             timer2.Stop();
 
@@ -157,6 +181,7 @@ namespace QCS
                 vm.ShowButtons = true;
                 inter.Visibility = Visibility.Visible;
                 NoteBox.Visibility = System.Windows.Visibility.Collapsed;
+                
                 vm.Note = string.Empty;
                 if (item.Note != null && item.Note != string.Empty)
                 {
@@ -164,19 +189,17 @@ namespace QCS
                     NoteText.Text = item.Note;
                     NoteBox.Visibility = Visibility.Visible;
                 }
-                DateTime date = (DateTime)vm.assemblyInfo.Duedate;
+                DateTime date  = (DateTime)vm.assemblyInfo.Duedate;
                 DateTime future = DateTime.Now.AddDays(2);
-                if (date < future)
-                {
-                    duedate.Foreground = new SolidColorBrush(Colors.Red);
-                    duedate.FontSize = 36;
-                }
+              //always make the duedate standout
+                duedate.Foreground = new SolidColorBrush(Colors.Red); 
+                duedate.FontSize = 36;
+               
                 if (date.Date <= DateTime.Now.Date)
                     duedate.Text = "TODAY";
                 else
                     duedate.Text = date.DayOfWeek.ToString() + " " + date.Day;
-
-          //      vm.Duedate = duedate.Text;
+                vm.Duedate = duedate.Text;
                 CustomerName.Text = vm.activeCustomer.FirstName + " " + vm.activeCustomer.LastName;
                 //check if this is in Route
                 int RFIDlen = vm.assemblyInfo.rfid.Length;
@@ -214,7 +237,7 @@ namespace QCS
             if (employeeID == "1")
             {
                 Note.Visibility = Visibility.Visible;
-
+               
             }
 
             byte[] binaryData = Convert.FromBase64String(item.picture);
@@ -298,6 +321,11 @@ namespace QCS
             Login.Visibility = Visibility.Collapsed;
             msg.Text = vm.Employeename + " logged in";
             Loggedin.Visibility = Visibility.Visible;
+            if (employeeID == "1")
+            {
+                
+              //  Totals.Visibility = Visibility.Visible;
+            }
             Barcode.Focus();
 
 
@@ -326,7 +354,12 @@ namespace QCS
         {
 
             Button but = sender as Button;
-            vm.reason = but.Content as string;
+            string content = but.Content as string;
+            //look for count as included in button label after (
+            int pos = content.IndexOf('(');
+            if (pos == -1)
+                pos = content.Count();
+            vm.reason = content.Substring(0,pos);
 
             string message = vm.saveQCS(Barcode.Text, vm.reason);
             if (message != string.Empty)
@@ -405,6 +438,16 @@ namespace QCS
                 vm.SaveShowPass(0);
             }
 
+        }
+
+        private void Totals_Click(object sender, RoutedEventArgs e)
+        {
+            totalsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void SpotsTotal_Click(object sender, RoutedEventArgs e)
+        {
+            Details.ItemsSource = vm.GetQCSTotal("Spots");
         }
     }
 }

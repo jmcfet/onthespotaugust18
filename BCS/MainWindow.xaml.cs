@@ -199,27 +199,32 @@ namespace BCS
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (Login.Content as String == "Logout")
+            string lab = Login.Content as String;
+            if (lab.Contains("Logout"))
             {
                 Login.Content = "Login";
                 container.Visibility = Visibility.Collapsed;
                 UserAdmin.Visibility = Visibility.Collapsed;
+                vm.activeUser = null;
+                ClearItemFields();
                 return;
             }
             Login login = new Login(vm);
             login.ShowDialog();
+            if (vm.activeUser == null)
+                return;
             vm.bLoggedIn = true;
            
-            if (vm.UserLevel == 1 || vm.UserLevel == 2)
+            if (vm.activeUser.Level == 1 || vm.activeUser.Level == 2)
             {
-                Login.Content = "Logout";
+                Login.Content = "Logout " + vm.activeUser.Name;
             //    vm.ClassifyButtonText = "Admin Off";
                 vm.ReClassifyButtonText = "ReClassify On";
                 vm.QuickReClassifyButtonText = "Quick reclassify On";
                 vm.BatchButtonText = "Batch On";
                 container.Visibility = Visibility.Visible;
             }
-            if (vm.UserLevel == 1)   //only super users can create new users
+            if (vm.activeUser.Level == 1)   //only super users can create new users
                 UserAdmin.Visibility  = Visibility.Visible;
            
             
@@ -528,6 +533,7 @@ namespace BCS
                 }
 
             }
+            
             if (!route)     //only look for next day if this is not a routed customer
                 bNextDay = vm.getNextdayBin(assemblyInfo);
 
@@ -578,11 +584,23 @@ namespace BCS
                     item.Category = vm.CleaningCats.Where(c => c.Name == but.Content.ToString()).Single();
                 }
                 ButRow1.Children.Add(but);
+                userName.Visibility = Visibility.Hidden;
+                
                 SetupActions();
 
             }
             else
             {
+                if (vm.activeUser != null && vm.activeUser.Level == 1)
+                {
+                    if (item.User != null)
+                    {
+                        userName.Text = item.User.Name;
+                        userName.Visibility = Visibility.Visible;
+                        ClassedDate.Text = item.CreationDate.Value.ToShortDateString() + " " + item.CreationDate.Value.ToShortTimeString();
+                        ClassedDate.Visibility = Visibility.Visible;
+                    }
+                }
                 //known item but first check if it is unknown as it needs to be categorized before proceeding
                 ButRow1.Children.Clear();
                 ButRow2.Children.Clear();
@@ -667,8 +685,13 @@ namespace BCS
                 return;
             }
             item.Category = catForBatch;
+            item.CreationDate = DateTime.Now;
+            
+            
             if (vm.QuickReClassifyButtonText == "Quick Reclassify Off")    //if in QuickClassy mode then do not wait for feedback
             {
+                if (vm.activeUser != null )
+                    item.User = vm.activeUser;
                 vm.SaveItem(item);
                 ClearItemFields();
                 CustomerName.Text = "";
@@ -704,12 +727,15 @@ namespace BCS
             Barcode.Text = "";
             BarcodeChars = 0;     //reenable the timer for reading barcode
             NoteButton.Visibility = Visibility.Hidden;
+            userName.Visibility = Visibility.Hidden;
+            ClassedDate.Visibility = Visibility.Hidden;
+            CustomerName.Visibility = Visibility.Hidden;
             Barcode.Focus();
 
         }
         void SetupActions()
         {
-
+            
             grid1.Visibility = Visibility.Visible;
             Category cat = item != null ? item.Category : null;
             //each bin represents a category of cleaning 
@@ -734,7 +760,11 @@ namespace BCS
             if (vm.BCSMode)
             {
                 if (item.Category.ID != 11)     //do not save next day info as next time the item might NOT be next day
+                {
+                    if (vm.activeUser != null)
+                        item.User = vm.activeUser;
                     vm.SaveItem(item);
+                }
             }
             else
             {

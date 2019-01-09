@@ -258,6 +258,50 @@ namespace DataAccessLayer
             return q1.ToList();
 
         }
+        public string SaveQCS(string heatseal, string type)
+        {
+            //The first condition is that the heatseal number has to be in the AutoSort.ArticleCode column and 
+            //slot blank
+            AssemblyDB.AutoSort auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == heatseal 
+            && au.Slot == " ").SingleOrDefault();
+            if (auto == null)
+                return string.Empty;
+            QCSInfo qcs = dbBCS.QCSInfoes.Where(Q => Q.HeatSeal == heatseal).SingleOrDefault();
+            if (qcs != null)   //if already there then update the type
+            {
+                qcs.Bin = type;
+            }
+            else
+            {
+                QCSInfo dbItem = new QCSInfo() { HeatSeal = heatseal, Bin = type, Time = DateTime.Now };
+                dbBCS.QCSInfoes.Add(dbItem);
+            }
+            try
+            {
+                dbBCS.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.Message;
+            }
+            return string.Empty;
+        }
+        public List<QCSInfo> getQCSInfo(string type)
+        {
+            DateTime day = DateTime.Now;
+            List<QCSInfo> filtered = new List<QCSInfo>();
+            List<QCSInfo> q1 =  dbBCS.QCSInfoes.Where(qcs=> qcs.Bin == type && DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
+            foreach(QCSInfo qcs in q1)
+            {
+                AssemblyDB.AutoSort auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal).SingleOrDefault();
+                if (auto != null)
+                {
+                    filtered.Add(qcs);
+                }
+            }
+            return filtered;    
+
+        }
         public List<GarmentIds> getTypes()
         {
 

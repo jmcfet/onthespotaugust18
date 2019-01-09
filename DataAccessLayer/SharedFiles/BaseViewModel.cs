@@ -166,7 +166,7 @@ namespace OnTheSpot.ViewModels
         {
             return db.GetUsers();
         }
-
+       
         public void Saveuser(User user)
         {
             db.SaveUser(user);

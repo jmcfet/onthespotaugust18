@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,22 @@ namespace OnTheSpot.Models
 
             }
         }
+        DataAccessLayer.User _user;
+        public DataAccessLayer.User User 
+        {
+            get { return _user; }
+            set
+            {
+                if (value == _user)
+                    return;
+
+                _user = value;
+
+                this.OnPropertyChanged("User");
+
+            }
+        }
+
 
     }
 }

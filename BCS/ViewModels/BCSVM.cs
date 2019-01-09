@@ -19,7 +19,7 @@ namespace OnTheSpot.ViewModels
         // this is used for developing when there is no hardware and to allow batch mode in BCS to work
         public bool bSimulatePhigetsMode = false;
         public string Note { get; set; }
-        public int UserLevel { get; set; }
+        public DataAccessLayer.User  activeUser { get; set; }
         public BCSandGSSVM(bool Mode)
         {
             BCSMode = Mode;

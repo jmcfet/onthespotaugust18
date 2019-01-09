@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201811201635443_user.Designer.cs">
       <DependentUpon>201811201635443_user.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811291457031_reset.cs" />
+    <Compile Include="Migrations\201811291457031_reset.Designer.cs">
+      <DependentUpon>201811291457031_reset.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\AutosortInfo.cs" />
@@ -206,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811201635443_user.resx">
       <DependentUpon>201811201635443_user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811291457031_reset.resx">
+      <DependentUpon>201811291457031_reset.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

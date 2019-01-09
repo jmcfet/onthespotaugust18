@@ -120,7 +120,7 @@ namespace DataAccessLayer
         {
             return db.Users.ToList();
         }
-
+       
         public void SaveUser(User user)
         {
             db.Users.Add(user);
@@ -162,12 +162,24 @@ namespace DataAccessLayer
                picture = item.picture
 
            };
+         //   if (item.CreateDate != null)
+                model.CreationDate = item.CreateDate;
            model.Category = new OnTheSpot.Models.Category()
            {
                ID = item.Category.ID,
                Description = item.Category.Description,
                Name = item.Category.Name
            };
+            if (item.User != null)
+            {
+                model.User = new User()
+                {
+                    Id = item.User.Id,
+                    Level = item.User.Level,
+                    Name = item.User.Name,
+                    Password = item.User.Password
+                };
+            }
            return model; 
         }
 
@@ -246,6 +258,8 @@ namespace DataAccessLayer
         //         logger.Info(string.Format("Create new"));  
                  dbItem = new Item() { BarCode = item.BarCode, CustID = item.CustID, CreateDate = item.CreationDate };
                  dbItem.CatID = item.Category.ID;
+                if (item.User != null)
+                    dbItem.User = item.User;
                  db.Items.Add(dbItem);
              }
              else
@@ -256,6 +270,9 @@ namespace DataAccessLayer
                     if (dbItem.CatID == item.Category.ID)
                         return;
                     dbItem.CatID = item.Category.ID;
+                    dbItem.CreateDate = item.CreationDate;
+                    if (item.User != null)
+                        dbItem.User = item.User;
                 }
                 else
                     dbItem.picture = item.picture;
@@ -270,22 +287,9 @@ namespace DataAccessLayer
              db.GSSes.Add(dbItem);
              db.SaveChanges();
          }
-         public string SaveQCS(string heatseal,string location)
-         {
-
-            QCSInfo dbItem = new QCSInfo() {  HeatSeal=heatseal, Bin=location, Time = DateTime.Now };
-             db.QCSInfoes.Add(dbItem);
-             try
-             {
-                 db.SaveChanges();
-             }
-             catch (Exception e)
-             {
-                return e.InnerException.Message;
-             }
-             return string.Empty;
-         }
-         public void saveNote(string heatseal, string note)
+        
+        
+        public void saveNote(string heatseal, string note)
          {
              Item item = db.Items.Where(i => i.BarCode == heatseal).SingleOrDefault();
              item.Note = note;

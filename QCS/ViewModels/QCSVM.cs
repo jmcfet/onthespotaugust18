@@ -69,9 +69,15 @@ namespace QCS.ViewModels
             public string saveQCS(string heatseal, string location)
             {
 
-                DBAccess db = new DBAccess(1);
+                DashQueries db = new DashQueries();
                 return db.SaveQCS(heatseal, location);
 
+            }
+
+            public List<QCSInfo> GetQCSTotal(string type)
+            {
+                DashQueries db = new DashQueries();
+                return db.getQCSInfo(type);
             }
             public void AddNote(string heatseal, string note)
             {

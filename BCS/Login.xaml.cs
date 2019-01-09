@@ -44,12 +44,13 @@ namespace BCS
             {
                 MessageBox.Show("Invalid userName or password");
             }
-            vm.UserLevel = user.Level;
+            vm.activeUser = user;
             this.Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            vm.activeUser = null;
             this.Close();
         }
     }
