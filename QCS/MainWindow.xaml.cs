@@ -449,5 +449,10 @@ namespace QCS
         {
             Details.ItemsSource = vm.GetQCSTotal("Spots");
         }
+
+        private void Missing_Click(object sender, RoutedEventArgs e)
+        {
+            vm.getMissingItems();
+        }
     }
 }

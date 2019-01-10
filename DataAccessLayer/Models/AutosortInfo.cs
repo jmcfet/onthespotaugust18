@@ -16,5 +16,6 @@ namespace OnTheSpot.Models
         public string rfid { get; set; }
         public string customerID { get; set; }
         public string HeatSeal { get; set; }
+        public string Description { get; set; }
     }
 }

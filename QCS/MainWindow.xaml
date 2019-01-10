@@ -123,11 +123,12 @@
                 </Grid>
                 <Button Content="Clear" x:Name="Clear" HorizontalAlignment="Left" Margin="465,148,0,0" VerticalAlignment="Top" Width="75" Height="38" Click="Clear_Click"/>
                 <Button x:Name="Note" Content="Note" HorizontalAlignment="Left" Margin="556,148,0,0" VerticalAlignment="Top" Width="75" Height="38" Click="Note_Click" Visibility="Visible"/>
-                
+
                 <Border x:Name="NoteBox"  BorderBrush="Red" BorderThickness="3" Visibility="Collapsed" HorizontalAlignment="Left" Height="71" Margin="46,429,0,0" VerticalAlignment="Top" Width="666">
                     <TextBlock x:Name="NoteText" TextWrapping="Wrap" Background="White" Text="TextBlock" FontSize="20"  />
 
                 </Border>
+                <Button Content="Missing Items " HorizontalAlignment="Left" Margin="637,148,0,0" VerticalAlignment="Top" Width="85" Height="38" Click="Missing_Click"/>
 
             </Grid>
 

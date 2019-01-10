@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Models;
 using DataAccessLayer.StoreDB;
 using NLog;
+using OnTheSpot.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -273,7 +274,7 @@ namespace DataAccessLayer
             }
             else
             {
-                QCSInfo dbItem = new QCSInfo() { HeatSeal = heatseal, Bin = type, Time = DateTime.Now };
+                QCSInfo dbItem = new QCSInfo() { HeatSeal = heatseal, Bin = type, Time = auto.DueDate };
                 dbBCS.QCSInfoes.Add(dbItem);
             }
             try
@@ -294,13 +295,42 @@ namespace DataAccessLayer
             foreach(QCSInfo qcs in q1)
             {
                 AssemblyDB.AutoSort auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal).SingleOrDefault();
-                if (auto != null)
+                if (auto != null && auto.Slot == "     ")
                 {
-                    filtered.Add(qcs);
+                    filtered.Add(qcs); 
                 }
             }
             return filtered;    
 
+        }
+        public List<AutoSortInfo> getAutoInfo()
+        {
+            DateTime day = DateTime.Now;
+            List<AutoSortInfo> filtered = new List<AutoSortInfo>();
+            List<QCSInfo> q1 = dbBCS.QCSInfoes.Where(qcs => DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
+            foreach (QCSInfo qcs in q1)
+            {
+                AutoSortInfo auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal && au.Slot == "     ")
+                    .Select(au => new AutoSortInfo{ storeid = au.StoreID, CustomerID = au.CustomerID, Description = au.Description     }).SingleOrDefault();
+
+               if (auto != null)
+                    filtered.Add(auto);
+               
+            }
+            return filtered;
+
+        }
+        public void RemoveQCSInfoEntries()
+        {
+            List<QCSInfo> q1 = dbBCS.QCSInfoes.ToList();
+            //foreach (QCSInfo qcs in q1)
+            //{
+            //    AssemblyDB.AutoSort auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal).SingleOrDefault();
+            //    if (auto != null)
+            //    {
+            //        filtered.Add(qcs);
+            //    }
+            //}
         }
         public List<GarmentIds> getTypes()
         {

@@ -19,6 +19,6 @@ namespace DataAccessLayer
         [StringLength(50)]
         public string Bin { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime? Time { get; set; }
     }
 }

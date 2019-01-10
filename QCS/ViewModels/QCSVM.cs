@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using DataAccessLayer.Models;
 using OnTheSpot.Models;
 using OnTheSpot.ViewModels;
 using System;
@@ -78,6 +79,30 @@ namespace QCS.ViewModels
             {
                 DashQueries db = new DashQueries();
                 return db.getQCSInfo(type);
+            }
+            public List<MissingItems> getMissingItems()
+            {
+                DBAccess db1;
+                List<string> storeNames = new List<string>() { "Haile", "Millhopper", "Westgate", "HuntersCrossing" };
+                //get all the autosort info associated with the qcs items for the day 
+                DashQueries db = new DashQueries();
+                List < AutoSortInfo> AutoSortInfo = db.getAutoInfo() ;
+                List<MissingItems> items = new List<MissingItems>();
+                foreach (AutoSortInfo info in AutoSortInfo)
+                {
+                    db1 = new DBAccess(info.storeid);
+                    
+                    Customer c =  db1.GetCustomer(info.CustomerID);
+                    MissingItems m = new MissingItems()
+                    {
+                        CustomerName = c.FirstName + " " + c.LastName,
+                        description = info.Description,
+                        store = storeNames[info.storeid - 1]
+                    };
+                    items.Add(m);
+                }
+                
+                return items;
             }
             public void AddNote(string heatseal, string note)
             {

@@ -95,9 +95,9 @@
     <Compile Include="Migrations\201811201635443_user.Designer.cs">
       <DependentUpon>201811201635443_user.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811291457031_reset.cs" />
-    <Compile Include="Migrations\201811291457031_reset.Designer.cs">
-      <DependentUpon>201811291457031_reset.cs</DependentUpon>
+    <Compile Include="Migrations\201901101922498_nullableDate.cs" />
+    <Compile Include="Migrations\201901101922498_nullableDate.Designer.cs">
+      <DependentUpon>201901101922498_nullableDate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -113,6 +113,7 @@
     <Compile Include="Models\GSS.cs" />
     <Compile Include="Models\InterogatorInfo.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\MissingItems.cs" />
     <Compile Include="Models\missingPieceInfo.cs" />
     <Compile Include="Models\OrdersLostOnRacktoMissingRackLocationData.cs" />
     <Compile Include="Models\printers.cs" />
@@ -211,8 +212,8 @@
     <EmbeddedResource Include="Migrations\201811201635443_user.resx">
       <DependentUpon>201811201635443_user.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811291457031_reset.resx">
-      <DependentUpon>201811291457031_reset.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901101922498_nullableDate.resx">
+      <DependentUpon>201901101922498_nullableDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
