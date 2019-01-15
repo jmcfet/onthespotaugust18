@@ -289,8 +289,11 @@ namespace DataAccessLayer
         }
         public List<QCSInfo> getQCSInfo(string type)
         {
+            //only want items with duedate of today
             DateTime day = DateTime.Now;
             List<QCSInfo> filtered = new List<QCSInfo>();
+           
+
             List<QCSInfo> q1 =  dbBCS.QCSInfoes.Where(qcs=> qcs.Bin == type && DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
             foreach(QCSInfo qcs in q1)
             {
@@ -303,20 +306,40 @@ namespace DataAccessLayer
             return filtered;    
 
         }
-        public List<AutoSortInfo> getAutoInfo()
+        public int GetCountUnCatQCS()
         {
             DateTime day = DateTime.Now;
-            List<AutoSortInfo> filtered = new List<AutoSortInfo>();
-            List<QCSInfo> q1 = dbBCS.QCSInfoes.Where(qcs => DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
-            foreach (QCSInfo qcs in q1)
-            {
-                AutoSortInfo auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal && au.Slot == "     ")
-                    .Select(au => new AutoSortInfo{ storeid = au.StoreID, CustomerID = au.CustomerID, Description = au.Description     }).SingleOrDefault();
+            List<QCSInfo> allqcs = dbBCS.QCSInfoes.ToList();
+                List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
+                List<AssemblyDB.AutoSort> uncat = (from auto in AssemblyStuff
+                                       where auto.Slot == "     " && !allqcs.Any(q => q.HeatSeal == auto.ArticleCode)
+                                       select auto).ToList();
+                return uncat.Count;
+           
+        }
 
-               if (auto != null)
-                    filtered.Add(auto);
-               
-            }
+        public List<qcsReportInfo> getAutoInfo()
+        {
+
+            DateTime day = DateTime.Now;
+           
+            List<qcsReportInfo> filtered = new List<qcsReportInfo>();
+
+            List<QCSInfo> q1 = dbBCS.QCSInfoes.ToList();
+          
+            List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => (auto.State > 0 && auto.State < 3 || auto.Slot == "     ")  && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
+            //remove ones where there
+            List<AssemblyDB.AutoSort> AssemblyStuff1 = AssemblyStuff.Where(auto => auto.State > 0 && auto.State < 3).ToList();
+            filtered = (from auto in AssemblyStuff1
+
+                        join qcs in q1 on auto.ArticleCode equals qcs.HeatSeal
+                                           select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description, qcsType = qcs.Bin }).ToList();
+            //does not have an entry in Assembly.dbo.AutoSort.Slot OR an entry in BCS.dbo.QCSinfo
+            List< qcsReportInfo > uncat = (from auto in AssemblyStuff
+                                           where auto.Slot == "     " && !q1.Any(q => q.HeatSeal == auto.ArticleCode)
+                                           select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description,qcsType="noCategory" }).ToList();
+
+            filtered.AddRange(uncat);
             return filtered;
 
         }

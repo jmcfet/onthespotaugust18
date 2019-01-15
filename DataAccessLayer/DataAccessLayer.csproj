@@ -118,6 +118,7 @@
     <Compile Include="Models\OrdersLostOnRacktoMissingRackLocationData.cs" />
     <Compile Include="Models\printers.cs" />
     <Compile Include="Models\QCS.cs" />
+    <Compile Include="Models\qcsReportInfo.cs" />
     <Compile Include="Models\ShirtInfo.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="BCSDb\User.cs" />

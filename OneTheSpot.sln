@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar", "Calendar\Calend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scheduler", "scheduler\scheduler.csproj", "{96F5D4DD-83B4-42D2-BC37-76F366BAA447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SUT.PrintEngine", "..\WPFPrintEngine\Source\SUT.PrintEngine\SUT.PrintEngine.csproj", "{0B3D76D5-D9F4-4C0E-AFA9-143138EBC74D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96F5D4DD-83B4-42D2-BC37-76F366BAA447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3D76D5-D9F4-4C0E-AFA9-143138EBC74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3D76D5-D9F4-4C0E-AFA9-143138EBC74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3D76D5-D9F4-4C0E-AFA9-143138EBC74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3D76D5-D9F4-4C0E-AFA9-143138EBC74D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

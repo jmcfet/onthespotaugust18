@@ -1,10 +1,14 @@
-﻿using NLog;
+﻿using DataAccessLayer.Models;
+using NLog;
 using OnTheSpot.Models;
 using QCS.Views;
+using SUT.PrintEngine.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -30,7 +35,7 @@ namespace QCS
         QSSVM vm = new QSSVM();
         List<string> testCodes = new List<string>() { "1000492087", "1000508922", "1000446918", "1000446917", "1000446916", "1000446915", "1000446914" };
         int dumcode = 0;
-        List<string> buttonLabels = new List<string>() { "Spots", "Repairs/Buttons", "Repressing","Cleaner Station" };
+        List<string> buttonLabels = new List<string>() { "Spots", "Repairs", "Repressing","Cleaners" };
         int BarcodeChars = 0;
         DispatcherTimer timer1 = null;
         DispatcherTimer timer2 = null;
@@ -127,20 +132,25 @@ namespace QCS
         void timer1_Tick(object sender, EventArgs e)
         {
             int i = 0;
+            List<DataAccessLayer.QCSInfo> qcs;
             foreach (object but in buttonsContainer.Children)
             {
 
                 Button button = but as Button;
+                
                 if (i < buttonLabels.Count)
                 {
                     button.Visibility = Visibility.Visible;
-                    List<DataAccessLayer.QCSInfo> qcs = vm.GetQCSTotal(buttonLabels[i]);
+                    qcs = vm.GetQCSTotal(buttonLabels[i]);
                     button.Content = buttonLabels[i] + "(" +  qcs.Count().ToString() + ")";
                 }
                 i++;
-            }
-            
-            
+            } 
+                        
+            noCat.Content = "no category" + "(" + vm.getUncatCount().ToString() + ")";
+
+
+
         }
             //only this timer is operation now
          void timer2_Tick(object sender, EventArgs e)
@@ -452,7 +462,46 @@ namespace QCS
 
         private void Missing_Click(object sender, RoutedEventArgs e)
         {
-            vm.getMissingItems();
+            List<MissingItems>  items = vm.getMissingItems();
+            var dataTable = new DataTable();
+
+            AddColumn(dataTable, "store", typeof(string));
+            AddColumn(dataTable, "type", typeof(string));
+            AddColumn(dataTable, "description", typeof(string));
+            AddColumn(dataTable, "CustomerName", typeof(string));
+            int row = 0;
+            string store1 = items[0].store;
+            foreach (MissingItems item in items)
+            {
+                var dataRow = dataTable.NewRow();
+                //if change in store than add a line of blanks for seperation
+                if (store1 != item.store)
+                {
+                    dataRow[0] = "  ";
+                    dataRow[1] = "  ";
+                    dataRow[2] = "  ";
+                    dataRow[3] = "  ";
+                    dataTable.Rows.Add(dataRow);
+                    dataRow = dataTable.NewRow();
+                }
+                dataRow[0] = item.store;
+                dataRow[1] = item.qcsType;
+                dataRow[2] = item.description;
+                dataRow[3] = item.CustomerName;
+                dataTable.Rows.Add(dataRow);
+                store1 = item.store;
+            }
+            var columnWidths = new List<double>() { 80, 80, 300, 150 };
+            var ht = new HeaderTemplate();
+            var headerTemplate = XamlWriter.Save(ht);
+            var printControl = PrintControlFactory.Create(dataTable, columnWidths, headerTemplate);
+            printControl.ShowPrintPreview();
+
+        }
+        private void AddColumn(DataTable dataTable, string columnName, Type type)
+        {
+            var dataColumn = new DataColumn(columnName, type);
+            dataTable.Columns.Add(dataColumn);
         }
     }
 }

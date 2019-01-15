@@ -80,15 +80,22 @@ namespace QCS.ViewModels
                 DashQueries db = new DashQueries();
                 return db.getQCSInfo(type);
             }
+
+            public int getUncatCount()
+            {
+                DashQueries db = new DashQueries();
+                return db.GetCountUnCatQCS();
+               
+            }
             public List<MissingItems> getMissingItems()
             {
                 DBAccess db1;
-                List<string> storeNames = new List<string>() { "Haile", "Millhopper", "Westgate", "HuntersCrossing" };
+                List<string> storeNames = new List<string>() { "Haile", "Millhopper", "Westgate", "Hunters" };
                 //get all the autosort info associated with the qcs items for the day 
                 DashQueries db = new DashQueries();
-                List < AutoSortInfo> AutoSortInfo = db.getAutoInfo() ;
+                List < qcsReportInfo> AutoSortInfo = db.getAutoInfo() ;
                 List<MissingItems> items = new List<MissingItems>();
-                foreach (AutoSortInfo info in AutoSortInfo)
+                foreach (qcsReportInfo info in AutoSortInfo)
                 {
                     db1 = new DBAccess(info.storeid);
                     
@@ -97,10 +104,12 @@ namespace QCS.ViewModels
                     {
                         CustomerName = c.FirstName + " " + c.LastName,
                         description = info.Description,
-                        store = storeNames[info.storeid - 1]
+                        store = storeNames[info.storeid - 1],
+                        qcsType = info.qcsType
                     };
                     items.Add(m);
                 }
+                items = items.OrderBy(i => i.store).ThenBy(i => i.qcsType).ThenBy(i=>i.CustomerName).ToList();
                 
                 return items;
             }
