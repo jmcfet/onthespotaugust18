@@ -462,7 +462,14 @@ namespace QCS
 
         private void Missing_Click(object sender, RoutedEventArgs e)
         {
+            timer1.Stop();
             List<MissingItems>  items = vm.getMissingItems();
+            if (items.Count == 0)
+            {
+                MessageBox.Show("no items to report");
+                return;
+            }
+            timer1.Start();
             var dataTable = new DataTable();
 
             AddColumn(dataTable, "store", typeof(string));
@@ -477,13 +484,15 @@ namespace QCS
                 //if change in store than add a line of blanks for seperation
                 if (store1 != item.store)
                 {
-                    dataRow[0] = "  ";
+                    dataRow[0] = row.ToString();
                     dataRow[1] = "  ";
                     dataRow[2] = "  ";
                     dataRow[3] = "  ";
+                    row = 0;
                     dataTable.Rows.Add(dataRow);
                     dataRow = dataTable.NewRow();
                 }
+                row++;
                 dataRow[0] = item.store;
                 dataRow[1] = item.qcsType;
                 dataRow[2] = item.description;
@@ -496,6 +505,7 @@ namespace QCS
             var headerTemplate = XamlWriter.Save(ht);
             var printControl = PrintControlFactory.Create(dataTable, columnWidths, headerTemplate);
             printControl.ShowPrintPreview();
+            
 
         }
         private void AddColumn(DataTable dataTable, string columnName, Type type)

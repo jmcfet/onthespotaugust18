@@ -287,49 +287,96 @@ namespace DataAccessLayer
             }
             return string.Empty;
         }
+        //The Goal of this modification is to determine the whereabouts of any pieces still in the AutoSort table of the 
+        //Assembly Database.  We currently spend 2-3 man hours per day looking for pieces to make sure all orders are completed on time. 
+        //look for heatseals in autosort that hava a blank in slot that have been placed in the qcsinfo table 
         public List<QCSInfo> getQCSInfo(string type)
         {
             //only want items with duedate of today
             DateTime day = DateTime.Now;
             List<QCSInfo> filtered = new List<QCSInfo>();
-           
 
-            List<QCSInfo> q1 =  dbBCS.QCSInfoes.Where(qcs=> qcs.Bin == type && DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
-            foreach(QCSInfo qcs in q1)
-            {
-                AssemblyDB.AutoSort auto = dbassembly.AutoSorts.Where(au => au.ArticleCode == qcs.HeatSeal).SingleOrDefault();
-                if (auto != null && auto.Slot == "     ")
-                {
-                    filtered.Add(qcs); 
-                }
-            }
+
+
+            filtered = (from qcs in dbBCS.QCSInfoes
+                        where qcs.Bin == type && DbFunctions.TruncateTime(qcs.Time) == day.Date
+
+                        join auto in dbBCS.vAutosorts on qcs.HeatSeal equals auto.ArticleCode
+                        where auto.Slot == "     "
+                        select qcs).ToList();
+
+
             return filtered;    
 
         }
         public int GetCountUnCatQCS()
         {
             DateTime day = DateTime.Now;
-            List<QCSInfo> allqcs = dbBCS.QCSInfoes.ToList();
-                List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
-                List<AssemblyDB.AutoSort> uncat = (from auto in AssemblyStuff
-                                       where auto.Slot == "     " && !allqcs.Any(q => q.HeatSeal == auto.ArticleCode)
-                                       select auto).ToList();
-                return uncat.Count;
+           
+            //List<QCSInfo> allqcs = dbBCS.QCSInfoes.ToList();
+            //    List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
+            //    List<AssemblyDB.AutoSort> uncat = (from auto in AssemblyStuff
+            //                           where auto.Slot == "     " && !allqcs.Any(q => q.HeatSeal == auto.ArticleCode)
+            //                           select auto).ToList();
+            List<v_Autosort> uncat = (from auto in dbBCS.vAutosorts  where auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+                                               && !dbBCS.QCSInfoes.Any(q => q.HeatSeal == auto.ArticleCode)
+                                               select auto).ToList();
+           
+            return uncat.Count;
            
         }
+
 
         public List<qcsReportInfo> getAutoInfo()
         {
 
             DateTime day = DateTime.Now;
-           
+            
             List<qcsReportInfo> filtered = new List<qcsReportInfo>();
 
-            List<QCSInfo> q1 = dbBCS.QCSInfoes.ToList();
+            //List<QCSInfo> q1 = dbBCS.QCSInfoes.Where(qcs => DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
+            //List<AutoSortInfo> AssemblyStuff = (from auto in dbassembly.AutoSorts
+            //                                    where (auto.State == 1 || auto.State == 2 || auto.Slot == "    ")
+            //                                    && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+
+            //                                    select new AutoSortInfo
+            //                                    {
+            //                                        HeatSeal = auto.ArticleCode,
+            //                                        storeid = auto.StoreID,
+            //                                        CustomerID = auto.CustomerID,
+            //                                        Description = auto.Description,
+            //                                        slot = auto.Slot,
+            //                                        state = auto.State
+            //                                    }).ToList();
+            //List<AutoSortInfo> AssemblyStuff1 = AssemblyStuff.Where(auto => auto.state == 1 || auto.state == 2).ToList();
+            filtered = (from auto in dbBCS.vAutosorts
+                        where (auto.State == 1 || auto.State == 2)
+                                                && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+                        join qcs in dbBCS.QCSInfoes on auto.ArticleCode equals qcs.HeatSeal
+                        select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description, qcsType = qcs.Bin }).ToList();
+            //does not have an entry in Assembly.dbo.AutoSort.Slot OR an entry in BCS.dbo.QCSinfo
+            List<qcsReportInfo> uncat = (from auto in dbBCS.vAutosorts
+                                         where auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+                                            && !dbBCS.QCSInfoes.Any(q => q.HeatSeal == auto.ArticleCode)
+                                         select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description, qcsType = "noCategory" }).ToList();
+
+            filtered.AddRange(uncat);
+            return filtered;
+        }
+        //had to rewrite the autosort query to use a projection as Entity framework returned duplicate heatseals
+        public List<qcsReportInfo> getAutoInfo1()
+        {
+
+            DateTime day = DateTime.Now;
+           
+
+            List<qcsReportInfo> filtered = new List<qcsReportInfo>();
+
+            List<QCSInfo> q1 = dbBCS.QCSInfoes.Where(qcs=> DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
           
-            List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => (auto.State > 0 && auto.State < 3 || auto.Slot == "     ")  && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
+            List<AssemblyDB.AutoSort> AssemblyStuff = dbassembly.AutoSorts.Where(auto => auto.State == 1  && DbFunctions.TruncateTime(auto.DueDate) == day.Date).ToList();
             //remove ones where there
-            List<AssemblyDB.AutoSort> AssemblyStuff1 = AssemblyStuff.Where(auto => auto.State > 0 && auto.State < 3).ToList();
+            List<AssemblyDB.AutoSort> AssemblyStuff1 = AssemblyStuff.Where(auto => auto.State == 1 || auto.State ==2).ToList();
             filtered = (from auto in AssemblyStuff1
 
                         join qcs in q1 on auto.ArticleCode equals qcs.HeatSeal
@@ -339,7 +386,7 @@ namespace DataAccessLayer
                                            where auto.Slot == "     " && !q1.Any(q => q.HeatSeal == auto.ArticleCode)
                                            select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description,qcsType="noCategory" }).ToList();
 
-            filtered.AddRange(uncat);
+      //      filtered.AddRange(uncat);
             return filtered;
 
         }

@@ -1,0 +1,28 @@
+﻿IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[v_autosort]'))
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dbo].[v_autosort]
+as
+select 
+[InvoiceID]
+      ,[StoreID]
+      ,[CustomerID]
+      ,[StoreInvoiceID]
+      ,[PieceTotal]
+      ,[ItemNumber]
+      ,[ArticleCode]
+      ,[Description]
+      ,[OccPercent]
+      ,[Hung]
+      ,[Status]
+      ,[Conveyor]
+      ,[Slot]
+      ,[Out]
+      ,[Customer]
+      ,[RFID]
+      ,[Arm]
+      ,[Queue]
+      ,[State]
+      ,[Remaining]
+      ,[InvoiceDate]
+      ,[DueDate]
+      ,[HomePhone]
+from [Assembly].[dbo].[AutoSort] a'

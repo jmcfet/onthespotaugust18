@@ -83,6 +83,7 @@
     <Compile Include="BCSDb\OTISIdsToFabId.cs" />
     <Compile Include="BCSDb\Printer.cs" />
     <Compile Include="BCSDb\QCSInfo.cs" />
+    <Compile Include="BCSDb\v_Autosort.cs" />
     <Compile Include="CalendarAccess.cs" />
     <Compile Include="DashQueries.cs" />
     <Compile Include="Data\Repository.cs" />
@@ -98,6 +99,14 @@
     <Compile Include="Migrations\201901101922498_nullableDate.cs" />
     <Compile Include="Migrations\201901101922498_nullableDate.Designer.cs">
       <DependentUpon>201901101922498_nullableDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901192111583_addautosortview.cs" />
+    <Compile Include="Migrations\201901192111583_addautosortview.Designer.cs">
+      <DependentUpon>201901192111583_addautosortview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901201651420_fixautosort.cs" />
+    <Compile Include="Migrations\201901201651420_fixautosort.Designer.cs">
+      <DependentUpon>201901201651420_fixautosort.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -216,6 +225,15 @@
     <EmbeddedResource Include="Migrations\201901101922498_nullableDate.resx">
       <DependentUpon>201901101922498_nullableDate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901192111583_addautosortview.resx">
+      <DependentUpon>201901192111583_addautosortview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901201651420_fixautosort.resx">
+      <DependentUpon>201901201651420_fixautosort.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Migrations\autosortview.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

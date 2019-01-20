@@ -21,9 +21,10 @@ namespace DataAccessLayer
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<OTISIdsToFabId> OTISIdsToFabIds { get; set; }
         public virtual DbSet<NoteForCustomer> CustomerNotes { get; set; }
-        public virtual DbSet<Printer> Printers { get; set; }
+        public virtual DbSet<Printer> Printers { get; set; } 
         public virtual DbSet<QCSInfo> QCSInfoes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<v_Autosort> vAutosorts { get; set; }
+    public virtual DbSet<User> Users { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()
