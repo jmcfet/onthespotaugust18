@@ -24,7 +24,9 @@ namespace DataAccessLayer
         public virtual DbSet<Printer> Printers { get; set; } 
         public virtual DbSet<QCSInfo> QCSInfoes { get; set; }
         public virtual DbSet<v_Autosort> vAutosorts { get; set; }
-    public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<v_Logger> vLogger { get; set; }
+
+        public virtual DbSet<User> Users { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()

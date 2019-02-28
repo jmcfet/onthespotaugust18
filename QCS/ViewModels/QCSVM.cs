@@ -105,7 +105,9 @@ namespace QCS.ViewModels
                         CustomerName = c.FirstName + " " + c.LastName,
                         description = info.Description,
                         store = storeNames[info.storeid - 1],
-                        qcsType = info.qcsType
+                        qcsType = info.qcsType,
+                        TimeStampIn = info.TimeStampIn
+
                     };
                     items.Add(m);
                 }

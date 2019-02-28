@@ -84,6 +84,7 @@
     <Compile Include="BCSDb\Printer.cs" />
     <Compile Include="BCSDb\QCSInfo.cs" />
     <Compile Include="BCSDb\v_Autosort.cs" />
+    <Compile Include="BCSDb\v_Logger.cs" />
     <Compile Include="CalendarAccess.cs" />
     <Compile Include="DashQueries.cs" />
     <Compile Include="Data\Repository.cs" />
@@ -107,6 +108,10 @@
     <Compile Include="Migrations\201901201651420_fixautosort.cs" />
     <Compile Include="Migrations\201901201651420_fixautosort.Designer.cs">
       <DependentUpon>201901201651420_fixautosort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902182022121_addloogerview.cs" />
+    <Compile Include="Migrations\201902182022121_addloogerview.Designer.cs">
+      <DependentUpon>201902182022121_addloogerview.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -230,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901201651420_fixautosort.resx">
       <DependentUpon>201901201651420_fixautosort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902182022121_addloogerview.resx">
+      <DependentUpon>201902182022121_addloogerview.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

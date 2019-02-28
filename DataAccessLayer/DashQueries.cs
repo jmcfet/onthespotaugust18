@@ -334,33 +334,51 @@ namespace DataAccessLayer
             
             List<qcsReportInfo> filtered = new List<qcsReportInfo>();
 
-            //List<QCSInfo> q1 = dbBCS.QCSInfoes.Where(qcs => DbFunctions.TruncateTime(qcs.Time) == day.Date).ToList();
-            //List<AutoSortInfo> AssemblyStuff = (from auto in dbassembly.AutoSorts
-            //                                    where (auto.State == 1 || auto.State == 2 || auto.Slot == "    ")
-            //                                    && DbFunctions.TruncateTime(auto.DueDate) == day.Date
-
-            //                                    select new AutoSortInfo
-            //                                    {
-            //                                        HeatSeal = auto.ArticleCode,
-            //                                        storeid = auto.StoreID,
-            //                                        CustomerID = auto.CustomerID,
-            //                                        Description = auto.Description,
-            //                                        slot = auto.Slot,
-            //                                        state = auto.State
-            //                                    }).ToList();
-            //List<AutoSortInfo> AssemblyStuff1 = AssemblyStuff.Where(auto => auto.state == 1 || auto.state == 2).ToList();
+           
             filtered = (from auto in dbBCS.vAutosorts
-                        where (auto.State == 1 || auto.State == 2)
-                                                && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+                        where (auto.State > 0 && auto.State <  3)
+                        && DbFunctions.TruncateTime(auto.DueDate) == day.Date
+                    //    join log in dbBCS.vLogger on auto.ArticleCode equals log.ArticleCode into logs
                         join qcs in dbBCS.QCSInfoes on auto.ArticleCode equals qcs.HeatSeal
-                        select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description, qcsType = qcs.Bin }).ToList();
+                  //      from log1 in logs.DefaultIfEmpty()
+                        select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID,
+                            InvoiceDate =auto.InvoiceDate,Description = auto.Description,
+                            qcsType = qcs.Bin , HeatSeal = auto.ArticleCode}).ToList();
+           
             //does not have an entry in Assembly.dbo.AutoSort.Slot OR an entry in BCS.dbo.QCSinfo
             List<qcsReportInfo> uncat = (from auto in dbBCS.vAutosorts
                                          where auto.Slot == "     " && DbFunctions.TruncateTime(auto.DueDate) == day.Date
                                             && !dbBCS.QCSInfoes.Any(q => q.HeatSeal == auto.ArticleCode)
-                                         select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID, Description = auto.Description, qcsType = "noCategory" }).ToList();
+                                     //    join log in dbBCS.vLogger on auto.ArticleCode equals log.ArticleCode into logs
+                                    //     from log1 in logs.DefaultIfEmpty()
+                                         select new qcsReportInfo { storeid = auto.StoreID, CustomerID = auto.CustomerID,
+                                             Description = auto.Description, qcsType = "Missing" ,
+                                             HeatSeal = auto.ArticleCode }).ToList();
+           //make sure there are no dups and get logger info
+            foreach (qcsReportInfo q in uncat)
+            {
+                
+                if (!filtered.Any(q1 => q1.HeatSeal == q.HeatSeal))
+                {
+                    
+                    filtered.Add(q);
+                }
+                
+            }
 
-            filtered.AddRange(uncat);
+            foreach (qcsReportInfo q in filtered)
+            {
+                v_Logger log1 = (from log in dbBCS.vLogger
+                                       where (log.ArticleCode == q.HeatSeal)
+                                       && log.TimeStampIn > q.InvoiceDate
+                                       select log).SingleOrDefault();
+                
+                q.TimeStampIn = null;
+                if (log1 != null)
+                    q.TimeStampIn = log1.TimeStampIn;
+                
+            }
+
             return filtered;
         }
         //had to rewrite the autosort query to use a projection as Entity framework returned duplicate heatseals

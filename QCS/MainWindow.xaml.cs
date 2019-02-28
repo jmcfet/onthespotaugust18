@@ -147,7 +147,7 @@ namespace QCS
                 i++;
             } 
                         
-            noCat.Content = "no category" + "(" + vm.getUncatCount().ToString() + ")";
+            noCat.Content = "Missing" + "(" + vm.getUncatCount().ToString() + ")";
 
 
 
@@ -474,13 +474,16 @@ namespace QCS
 
             AddColumn(dataTable, "store", typeof(string));
             AddColumn(dataTable, "type", typeof(string));
+            AddColumn(dataTable, "P", typeof(string));
             AddColumn(dataTable, "description", typeof(string));
             AddColumn(dataTable, "CustomerName", typeof(string));
+            AddColumn(dataTable, "PressStartTime", typeof(string));
             int row = 0;
             string store1 = items[0].store;
+            DataRow dataRow = null;
             foreach (MissingItems item in items)
             {
-                var dataRow = dataTable.NewRow();
+                 dataRow = dataTable.NewRow();
                 //if change in store than add a line of blanks for seperation
                 if (store1 != item.store)
                 {
@@ -488,6 +491,8 @@ namespace QCS
                     dataRow[1] = "  ";
                     dataRow[2] = "  ";
                     dataRow[3] = "  ";
+                    dataRow[4] = "  ";
+                    dataRow[5] = "  ";
                     row = 0;
                     dataTable.Rows.Add(dataRow);
                     dataRow = dataTable.NewRow();
@@ -495,12 +500,27 @@ namespace QCS
                 row++;
                 dataRow[0] = item.store;
                 dataRow[1] = item.qcsType;
-                dataRow[2] = item.description;
-                dataRow[3] = item.CustomerName;
+                if (item.TimeStampIn != null)
+                {
+                    dataRow[2] = "P";
+                    dataRow[5] = item.TimeStampIn.Value.ToString("ddd") + " " + item.TimeStampIn.Value.ToShortTimeString();
+                }
+                    
+                dataRow[3] = item.description;
+                dataRow[4] = item.CustomerName;
+               
                 dataTable.Rows.Add(dataRow);
                 store1 = item.store;
             }
-            var columnWidths = new List<double>() { 80, 80, 300, 150 };
+            dataRow = dataTable.NewRow();
+            dataRow[0] = row.ToString();
+            dataRow[1] = "  ";
+            dataRow[2] = "  ";
+            dataRow[3] = "  ";
+           
+            dataTable.Rows.Add(dataRow);
+          
+            var columnWidths = new List<double>() { 80, 80,20, 300, 150,100 };
             var ht = new HeaderTemplate();
             var headerTemplate = XamlWriter.Save(ht);
             var printControl = PrintControlFactory.Create(dataTable, columnWidths, headerTemplate);
