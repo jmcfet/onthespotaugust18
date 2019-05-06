@@ -12,6 +12,8 @@ namespace DataAccessLayer.Models
         public string description { get; set; }
         public string CustomerName { get; set; }
         public string qcsType { get; set; }
+        public string rfid { get; set; }
+        public string HeatSeal { get; set; }
         public DateTime? TimeStampIn { get; set; }
         public DateTime? TimeStampOut { get; set; }
     }

@@ -33,7 +33,7 @@ namespace QCS
     public partial class MainWindow : Window
     {
         QSSVM vm = new QSSVM();
-        List<string> testCodes = new List<string>() { "1000492087", "1000508922", "1000446918", "1000446917", "1000446916", "1000446915", "1000446914" };
+        List<string> testCodes = new List<string>() { "67", "1000508922", "1000446918", "1000446917", "1000446916", "1000446915", "1000446914" };
         int dumcode = 0;
         List<string> buttonLabels = new List<string>() { "Spots", "Repairs", "Repressing","Cleaners" };
         int BarcodeChars = 0;
@@ -156,7 +156,7 @@ namespace QCS
          void timer2_Tick(object sender, EventArgs e)
         {
             timer2.Stop();
-
+            BarcodeChars = 0;
             if (!ProcessBarcode())
                 return;
             Mouse.OverrideCursor = Cursors.Wait;
@@ -247,7 +247,7 @@ namespace QCS
             if (employeeID == "1")
             {
                 Note.Visibility = Visibility.Visible;
-               
+                Remove.Visibility = Visibility.Visible;
             }
 
             byte[] binaryData = Convert.FromBase64String(item.picture);
@@ -263,17 +263,15 @@ namespace QCS
         {
             //test ddd
             double itemCode = 0;
-   //         Barcode.Text = testCodes[dumcode++];     //danger   yyyyyyy
+        //    Barcode.Text = testCodes[1];     //danger   yyyyyyy
             logger.Info("Read bar code " + Barcode.Text);
             if (Barcode.Text == string.Empty)
                 return false;
-            if (Barcode.Text.Length < 9)
+            if (Barcode.Text.Length != 10)
             {
                 Errormsg.Text = string.Format("invalid barcode {0}", Barcode.Text);
                 ErrorTxt.Visibility = Visibility.Visible;
-                Barcode.Text = string.Empty;
-                BarcodeChars = 0;
-                Barcode.Focus();
+                doClear();
                 return false;
             }
 
@@ -334,7 +332,7 @@ namespace QCS
             if (employeeID == "1")
             {
                 
-              //  Totals.Visibility = Visibility.Visible;
+                Remove.Visibility = Visibility.Visible;
             }
             Barcode.Focus();
 
@@ -391,6 +389,11 @@ namespace QCS
         {
             if (BarcodeChars > 0)
                 bClearPressed = true;
+            doClear();
+
+        }
+        void doClear()
+        {
             Barcode.Text = "";
             Barcode.Focus();
             BarcodeChars = 0;
@@ -400,7 +403,6 @@ namespace QCS
             ErrorTxt.Visibility = Visibility.Collapsed;
             NoteBox.Visibility = Visibility.Collapsed;
             picture.Visibility = Visibility.Collapsed;
-            
 
         }
         private void ImgButtonClick(object sender, RoutedEventArgs e)
@@ -463,7 +465,14 @@ namespace QCS
         private void Missing_Click(object sender, RoutedEventArgs e)
         {
             timer1.Stop();
-            List<MissingItems>  items = vm.getMissingItems();
+            List<MissingItems> items = vm.getMissingItems();
+            FillTable(items);
+
+        }
+
+        void FillTable(List<MissingItems> items)
+        {
+            items = items.OrderBy(i => i.store).ToList();
             if (items.Count == 0)
             {
                 MessageBox.Show("no items to report");
@@ -483,7 +492,7 @@ namespace QCS
             DataRow dataRow = null;
             foreach (MissingItems item in items)
             {
-                 dataRow = dataTable.NewRow();
+                dataRow = dataTable.NewRow();
                 //if change in store than add a line of blanks for seperation
                 if (store1 != item.store)
                 {
@@ -505,10 +514,10 @@ namespace QCS
                     dataRow[2] = "P";
                     dataRow[5] = item.TimeStampIn.Value.ToString("ddd") + " " + item.TimeStampIn.Value.ToShortTimeString();
                 }
-                    
+
                 dataRow[3] = item.description;
                 dataRow[4] = item.CustomerName;
-               
+
                 dataTable.Rows.Add(dataRow);
                 store1 = item.store;
             }
@@ -517,21 +526,90 @@ namespace QCS
             dataRow[1] = "  ";
             dataRow[2] = "  ";
             dataRow[3] = "  ";
-           
+
             dataTable.Rows.Add(dataRow);
-          
-            var columnWidths = new List<double>() { 80, 80,20, 300, 150,100 };
+
+            var columnWidths = new List<double>() { 35, 80, 20, 300, 150, 100 };
             var ht = new HeaderTemplate();
             var headerTemplate = XamlWriter.Save(ht);
             var printControl = PrintControlFactory.Create(dataTable, columnWidths, headerTemplate);
             printControl.ShowPrintPreview();
-            
 
         }
         private void AddColumn(DataTable dataTable, string columnName, Type type)
         {
             var dataColumn = new DataColumn(columnName, type);
             dataTable.Columns.Add(dataColumn);
+        }
+
+        private void Remove_Click(object sender, RoutedEventArgs e)
+        {
+            if (vm.RemoveQCSInfoEntries(Barcode.Text))
+                MessageBox.Show("Heatseal deleted");
+            else
+                MessageBox.Show("Heatseal not found");
+        }
+        List<ShirtInfo> topsundone = null;
+        List<MissingItems> allmissingitems = null;
+
+        private void MissingTops(object sender, RoutedEventArgs e)
+        {
+
+
+            List<ShirtInfo> undone = vm.getUndoneItemsByType().Where(a => a.type == "tops").ToList();
+            if (undone == null)
+                return;
+            doFilter(undone);
+            
+        }
+        private void MissingBottoms(object sender, RoutedEventArgs e)
+        {
+
+
+            List<ShirtInfo> undone = vm.getUndoneItemsByType().Where(a => a.type == "bottoms").ToList();
+            if (undone == null)
+                return;
+            doFilter(undone);
+        }
+        private void MissingHouseHold(object sender, RoutedEventArgs e)
+        {
+
+
+            List<ShirtInfo> undone = vm.getUndoneItemsByType().Where(a => a.type == "Household").ToList();
+            if (undone == null)
+                return;
+            doFilter(undone);
+        }
+        private void MissingShirts(object sender, RoutedEventArgs e)
+        {
+
+            List<ShirtInfo> undone = vm.getUndoneItemsByType().Where(a => a.type == "Shirts").ToList();
+            if (undone == null)
+                return;
+            doFilter(undone);
+
+        }
+        void doFilter(List<ShirtInfo> undone)
+        {
+            if (allmissingitems == null)
+                allmissingitems = vm.getMissingItems().Where(i => i.qcsType == "Missing").ToList();
+            List<MissingItems> filtered = (from l1 in undone
+                                           join l2 in allmissingitems
+                       on l1.articleID equals l2.HeatSeal
+                                           select new MissingItems
+                                           {
+                                               CustomerName = l2.CustomerName,
+                                               HeatSeal = l2.HeatSeal,
+                                               description = l2.description,
+                                               qcsType = l2.qcsType,
+                                               rfid = l2.rfid,
+                                               store = l2.store,
+                                               TimeStampIn = l2.TimeStampIn,
+                                               TimeStampOut = l2.TimeStampOut
+                                           }
+                          ).ToList();
+            FillTable(filtered);
+            
         }
     }
 }

@@ -67,6 +67,18 @@ namespace QCS.ViewModels
                 return db.GetEmployee(id);
 
             }
+            public List<ShirtInfo> getUndoneItemsByType()
+            {
+                DashQueries db = new DashQueries();
+                int addDays = 0;
+                List<ShirtInfo> allNotDone = new List<ShirtInfo>();
+                allNotDone.AddRange(  db.getItemCount("Shirts", addDays));
+                allNotDone.AddRange(db.getItemCount("tops", addDays));
+                allNotDone.AddRange(db.getItemCount("bottoms", addDays));
+                allNotDone.AddRange(db.getItemCount("Household", addDays));
+                return allNotDone;
+            }
+
             public string saveQCS(string heatseal, string location)
             {
 
@@ -90,7 +102,7 @@ namespace QCS.ViewModels
             public List<MissingItems> getMissingItems()
             {
                 DBAccess db1;
-                List<string> storeNames = new List<string>() { "Haile", "Millhopper", "Westgate", "Hunters" };
+                List<string> storeNames = new List<string>() { "HP", "MH", "WG", "HC" };
                 //get all the autosort info associated with the qcs items for the day 
                 DashQueries db = new DashQueries();
                 List < qcsReportInfo> AutoSortInfo = db.getAutoInfo() ;
@@ -106,9 +118,14 @@ namespace QCS.ViewModels
                         description = info.Description,
                         store = storeNames[info.storeid - 1],
                         qcsType = info.qcsType,
-                        TimeStampIn = info.TimeStampIn
+                        TimeStampIn = info.TimeStampIn,
+                        rfid = info.rfid,
+                        HeatSeal = info.HeatSeal
 
                     };
+                    
+                    if (m.store == "MH" && !m.rfid.StartsWith("    "))
+                        m.store = "R";
                     items.Add(m);
                 }
                 items = items.OrderBy(i => i.store).ThenBy(i => i.qcsType).ThenBy(i=>i.CustomerName).ToList();
@@ -126,6 +143,11 @@ namespace QCS.ViewModels
                 return "Item not found, call manager immediately! {0}";
             }
 
+            public bool RemoveQCSInfoEntries(string heatseal)
+            {
+                DashQueries db = new DashQueries();
+                return db.RemoveQCSInfoEntries(heatseal);
+            }
             public OnTheSpot.Models.InterogatorInfo getInfoForInterogator()
             {
 

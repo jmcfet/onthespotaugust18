@@ -237,14 +237,14 @@ namespace DataAccessLayer
             }
             return ListData.OrderBy(o => o.storeID).ToList();
         }
-        public List<ShirtInfo> getItemCount(string type, int plusdays)
+        public List<ShirtInfo> getItemCount(string typein, int plusdays)
         {
             
             DateTime dueDate = DateTime.Now.AddDays(plusdays);
             if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)    //if Friday move to Monday      
                 dueDate = dueDate.AddDays(2);
             List<int> ids = (from cat in dbBCS.Categories
-                             where cat.Name == type
+                             where cat.Name == typein
                              join fab in dbBCS.OTISIdsToFabIds on cat.ID equals fab.CatID
                              select fab.FabID).ToList();
 
@@ -253,7 +253,7 @@ namespace DataAccessLayer
                      join auto in dbassembly.AutoSorts on inv.ArticleCode equals auto.ArticleCode
                      where DbFunctions.TruncateTime(auto.DueDate) >= DateTime.Today && DbFunctions.TruncateTime(auto.DueDate) <= dueDate
                      && auto.Status == "R"
-                     select new ShirtInfo { articleID = inv.ArticleCode, invoiceID = inv.InvoiceID, dueDate = auto.DueDate };
+                     select new ShirtInfo { articleID = inv.ArticleCode, invoiceID = inv.InvoiceID, dueDate = auto.DueDate, type = typein  } ;
 
 
             return q1.ToList();

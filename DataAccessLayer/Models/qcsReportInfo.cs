@@ -10,11 +10,11 @@ namespace DataAccessLayer.Models
     {
         public int CustomerID { get; set; }
         public int InvoiceNumber { get; set; }
-        public string dept { get; set; }
+        public string CustomerName { get; set; }
         public DateTime? Duedate { get; set; }
             public DateTime? InvoiceDate { get; set; }
         public int storeid { get; set; }
-        public string storeName { get; set; }
+        public string store { get; set; }
         public string rfid { get; set; }
         public string customerID { get; set; }
         public string HeatSeal { get; set; }

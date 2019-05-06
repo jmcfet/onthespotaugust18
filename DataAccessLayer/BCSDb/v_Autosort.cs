@@ -1,4 +1,4 @@
-﻿namespace DataAccessLayer
+namespace DataAccessLayer
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public  class v_Autosort
+    public partial class v_autosort
     {
         [Key]
         [Column(Order = 0)]

@@ -107,19 +107,24 @@
                         Name="Barcode"  Height="40" FontSize="20"
                         VerticalAlignment="Top" TextDecorations="None" Grid.ColumnSpan="2" Margin="0,0,-0.8,-18" />
                 </Grid>
-                <Grid x:Name="buttonsContainer" HorizontalAlignment="Left" Height="215" Margin="59,214,0,0" VerticalAlignment="Top" Width="769" Visibility="{Binding ShowButtons, Converter={StaticResource BooleanToVisibilityConverter}}" >
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="337,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button  Content="Button" HorizontalAlignment="Left" Margin="485,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button x:Name="PassButton" Content="Pass" HorizontalAlignment="Left" Margin="640,10,0,0" VerticalAlignment="Top" Width="119" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button x:Name="noCat"  Content="Missing" IsEnabled="False" HorizontalAlignment="Left" Margin="267,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="337,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="502,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="337,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"/>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="502,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"/>
+                <Grid x:Name="buttonsContainer" HorizontalAlignment="Left" Height="215" Margin="59,300,0,0" VerticalAlignment="Top" Width="769" Visibility="{Binding ShowButtons, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="235*"/>
+                        <ColumnDefinition Width="534*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click" />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.ColumnSpan="2" />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
+                    <Button  Content="Button" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
+                    <Button x:Name="PassButton" Content="Pass" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="119" Height="46" Visibility="Visible" Grid.Column="1" />
+                    <Button x:Name="noCat"  Content="Missing" IsEnabled="False" HorizontalAlignment="Left" Margin="250,75,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="267,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.ColumnSpan="2"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.Column="1"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="267,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.Column="1"/>
+                    <Button x:Name="Remove"  Content="Remove"  HorizontalAlignment="Left" Margin="176,75,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Hidden" Click="Remove_Click" Grid.ColumnSpan="2"/>
                 </Grid>
                 <Button Content="Clear" x:Name="Clear" HorizontalAlignment="Left" Margin="465,148,0,0" VerticalAlignment="Top" Width="75" Height="38" Click="Clear_Click"/>
                 <Button x:Name="Note" Content="Note" HorizontalAlignment="Left" Margin="556,148,0,0" VerticalAlignment="Top" Width="75" Height="38" Click="Note_Click" Visibility="Visible"/>
@@ -128,7 +133,8 @@
                     <TextBlock x:Name="NoteText" TextWrapping="Wrap" Background="White" Text="TextBlock" FontSize="20"  />
 
                 </Border>
-                <Button Content="Missing Items " HorizontalAlignment="Left" Margin="637,148,0,0" VerticalAlignment="Top" Width="85" Height="38" Click="Missing_Click"/>
+                <Button Content="Locations Report" HorizontalAlignment="Left" Margin="108,210,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="Missing_Click"/>
+                <Button Content="Missing Tops" HorizontalAlignment="Left" Margin="220,210,0,0" VerticalAlignment="Top" Width="75" Height="38" Click="MissingTops"/>
 
             </Grid>
 
@@ -141,6 +147,9 @@
                 <Button Content="Button" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="97" Height="20" Margin="349,0,0,0"/>
                 <ListBox Name="Details"  HorizontalAlignment="Left" Height="121"  VerticalAlignment="Top" Width="128" Margin="181,44,0,0"/>
             </Grid>
+            <Button Content="Missing bottoms" HorizontalAlignment="Left" Margin="421,209,0,0" VerticalAlignment="Top" Width="97" Height="38" Click="MissingBottoms" Grid.Row="2"/>
+            <Button Content="Missing Shirts" HorizontalAlignment="Left" Margin="316,209,0,0" VerticalAlignment="Top" Width="82" Height="38" Click="MissingShirts" Grid.Row="2"/>
+            <Button Content="Missing Household" HorizontalAlignment="Left" Margin="533,209,0,0" Grid.Row="2" VerticalAlignment="Top" Width="109" Height="38" Click="MissingHouseHold"/>
 
         </Grid>
     </Grid>

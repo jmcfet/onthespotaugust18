@@ -10,6 +10,7 @@ namespace DataAccessLayer.Models
     {
        
         public int invoiceID { get; set; }
+        public string type { get; set; }
         public string articleID { get; set; }
         public DateTime? dueDate { get; set; }
     }

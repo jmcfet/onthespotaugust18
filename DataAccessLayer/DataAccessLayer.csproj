@@ -83,10 +83,11 @@
     <Compile Include="BCSDb\OTISIdsToFabId.cs" />
     <Compile Include="BCSDb\Printer.cs" />
     <Compile Include="BCSDb\QCSInfo.cs" />
+    <Compile Include="BCSDb\View_1.cs" />
     <Compile Include="BCSDb\v_Autosort.cs" />
-    <Compile Include="BCSDb\v_Logger.cs" />
+    <Compile Include="BCSDb\v_loggerall.cs" />
     <Compile Include="CalendarAccess.cs" />
-    <Compile Include="DashQueries.cs" />
+    <Compile Include="DashQueries1.cs" />
     <Compile Include="Data\Repository.cs" />
     <Compile Include="DBAccess.cs" />
     <Compile Include="Migrations\201808151921262_InitialMigration.cs" />
@@ -112,6 +113,10 @@
     <Compile Include="Migrations\201902182022121_addloogerview.cs" />
     <Compile Include="Migrations\201902182022121_addloogerview.Designer.cs">
       <DependentUpon>201902182022121_addloogerview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903052007548_newlogger.cs" />
+    <Compile Include="Migrations\201903052007548_newlogger.Designer.cs">
+      <DependentUpon>201903052007548_newlogger.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Appointment.cs" />
@@ -238,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902182022121_addloogerview.resx">
       <DependentUpon>201902182022121_addloogerview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903052007548_newlogger.resx">
+      <DependentUpon>201903052007548_newlogger.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
