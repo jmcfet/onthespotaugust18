@@ -72,10 +72,12 @@ namespace QCS
                 if (i < buttonLabels.Count)
                 {
                     button.Visibility = Visibility.Visible;
+                    button.IsEnabled = false;
                     button.Content = buttonLabels[i];
                 }
                 i++;
             }
+            PassButton.IsEnabled = false;
             if (vm.GetShowPass() == 1)
                 PassButton.Visibility = Visibility.Visible;
             timer2 = new DispatcherTimer();
@@ -189,6 +191,7 @@ namespace QCS
                 if (vm.bLoggedIn)
                     vm.BarcodeEntered = true;
                 vm.ShowButtons = true;
+                disableEnableButtons(true);
                 inter.Visibility = Visibility.Visible;
                 NoteBox.Visibility = System.Windows.Visibility.Collapsed;
                 
@@ -378,12 +381,28 @@ namespace QCS
             }
             print popup = new print(vm);
             popup.ShowDialog();
-
+            disableEnableButtons(false);
             Barcode.Text = "";
             Barcode.Focus();
             BarcodeChars = 0;
             vm.BarcodeEntered = false;
 
+        }
+        void disableEnableButtons(bool bState)
+        {
+            int i = 0;
+            foreach (object but in buttonsContainer.Children)
+            {
+
+                Button button = but as Button;
+                if (i < buttonLabels.Count)
+                {
+                    button.IsEnabled = bState ;
+                    button.Content = buttonLabels[i];
+                }
+                i++;
+            }
+            PassButton.IsEnabled = bState;
         }
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
@@ -549,8 +568,8 @@ namespace QCS
             else
                 MessageBox.Show("Heatseal not found");
         }
-        List<ShirtInfo> topsundone = null;
-        List<MissingItems> allmissingitems = null;
+       
+        
 
         private void MissingTops(object sender, RoutedEventArgs e)
         {
@@ -591,8 +610,8 @@ namespace QCS
         }
         void doFilter(List<ShirtInfo> undone)
         {
-            if (allmissingitems == null)
-                allmissingitems = vm.getMissingItems().Where(i => i.qcsType == "Missing").ToList();
+            
+            List<MissingItems> allmissingitems  = vm.getMissingItems().Where(i => i.qcsType == "Missing").ToList();
             List<MissingItems> filtered = (from l1 in undone
                                            join l2 in allmissingitems
                        on l1.articleID equals l2.HeatSeal

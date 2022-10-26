@@ -48,6 +48,7 @@ namespace BCS
                 MessageBox.Show("password cannot be blank");
                 return;
             }
+            users = vm.GetUsers();
             User user1 = users.Where(u => u.Name == Name.Text ).SingleOrDefault();
             if (user1 != null)
             {

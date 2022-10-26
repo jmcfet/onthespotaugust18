@@ -113,14 +113,14 @@
                         <ColumnDefinition Width="534*"/>
                     </Grid.ColumnDefinitions>
                     <Button Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Click="Button_Click" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.ColumnSpan="2" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
-                    <Button  Content="Button" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
-                    <Button x:Name="PassButton" Content="Pass" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="119" Height="46" Visibility="Visible" Grid.Column="1" />
-                    <Button x:Name="noCat"  Content="Missing" IsEnabled="False" HorizontalAlignment="Left" Margin="250,75,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="267,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" />
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="176,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.ColumnSpan="2" Click="Button_Click"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" Click="Button_Click"  />
+                    <Button  Content="Button" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" Click="Button_Click" />
+                    <Button x:Name="PassButton" Content="Pass" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="119" Height="46" Visibility="Visible" Grid.Column="1" Click="Button_Click"  />
+                    <Button x:Name="noCat"  Content="Missing" IsEnabled="False" HorizontalAlignment="Left" Margin="250,75,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Visible" Grid.Column="1" Click="Button_Click"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="102,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" Click="Button_Click"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="267,87,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Grid.Column="1" Click="Button_Click"  />
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click"  />
                     <Button Content="Button" HorizontalAlignment="Left" Margin="176,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.ColumnSpan="2"/>
                     <Button Content="Button" HorizontalAlignment="Left" Margin="102,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.Column="1"/>
                     <Button Content="Button" HorizontalAlignment="Left" Margin="267,155,0,0" VerticalAlignment="Top" Width="133" Height="46" Visibility="Collapsed" Click="Button_Click" Grid.Column="1"/>

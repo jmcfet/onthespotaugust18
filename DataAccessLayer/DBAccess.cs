@@ -128,6 +128,7 @@ namespace DataAccessLayer
         }
         public void DeleteUser(User user)
         {
+         //   List<Item> items = db.Items.Where(i => i.BarCode == barcode).ToList();
             db.Users.Remove(user);
             db.SaveChanges();
         }

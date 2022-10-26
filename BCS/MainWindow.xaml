@@ -57,7 +57,7 @@
 
                 <StackPanel Name="container" Height="30" Width="427" Orientation="Horizontal" Margin="0,10" Visibility="Hidden" >
                     <!--<Button Content="{Binding ClassifyButtonText}"  Name="Classify" Visibility="Visible" Width="77"  Click="Classify_Click"/>-->
-                    <Button Content="{Binding ReClassifyButtonText}"  Name="ReClassify" Visibility="Visible" Width="88" Click="Reclassify_click" />
+                    <!--<Button Content="{Binding ReClassifyButtonText}"  Name="ReClassify" Visibility="Hidden" Width="88" Click="Reclassify_click" />-->
                     <Button Content="{Binding QuickReClassifyButtonText}"  Name="QuickReClassify" Visibility="Visible" Width="120" Click="QickClassify_Click"/>
                     <Button Content="{Binding BatchButtonText}"  Name="BatchBCS" Visibility="Visible" Width="120" Click="BatchBCS_Click"/>
                     <!--<Button Content="Get Picture" Height="40" Name="TakePic" Margin="12 0"  Visibility="{Binding BarcodeEntered, Converter={StaticResource BooleanToVisibilityConverter}}" Width="120" Click="TakePic_Click"/>

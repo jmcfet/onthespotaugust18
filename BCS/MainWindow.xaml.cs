@@ -80,7 +80,7 @@ namespace BCS
             BatchOff();
             ButRow1.Children.Clear();
             ButRow2.Children.Clear();
-            ReClassify.Visibility = Visibility.Visible;
+         //   ReClassify.Visibility = Visibility.Visible;
             QuickReClassify.Visibility = Visibility.Visible;
             CustomerNote.Visibility = Visibility.Hidden;
         }
@@ -149,12 +149,13 @@ namespace BCS
             vm.OpenBCSandStoreDB();
             vm.OpenAssemblyDB();
             vm.GetOurEntities();
-            Login.Visibility = Visibility.Visible;
+            
 
 
             this.Dispatcher.Invoke(new Action(delegate ()     //use dispatcher to update UI
             {
-                  this.Cursor = oldcursor;
+                Login.Visibility = Visibility.Visible;
+                this.Cursor = oldcursor;
                 if (vm.DBerrormsg == string.Empty)
                 {
                     led2.ColorOn = Colors.Green;
@@ -234,7 +235,7 @@ namespace BCS
 
             vm.bControllerOn = false;
             logger.Info("BCS start");
-            ReClassify.Visibility = Visibility.Visible;
+          //  ReClassify.Visibility = Visibility.Visible;
 
             SetFocusBarcode();
 
@@ -279,7 +280,7 @@ namespace BCS
                 BatchOff();
                 ButRow1.Children.Clear();
                 ButRow2.Children.Clear();
-                ReClassify.Visibility = Visibility.Visible;
+             //   ReClassify.Visibility = Visibility.Visible;
                 QuickReClassify.Visibility = Visibility.Visible;
                 CustomerNote.Visibility = Visibility.Hidden;
             }
@@ -291,7 +292,7 @@ namespace BCS
                 BatchOff();
                 ButRow1.Children.Clear();
                 ButRow2.Children.Clear();
-                ReClassify.Visibility = Visibility.Visible;
+               // ReClassify.Visibility = Visibility.Visible;
                 QuickReClassify.Visibility = Visibility.Visible;
                 CustomerNote.Visibility = Visibility.Hidden;
                 Barcode.IsEnabled = false;
@@ -299,7 +300,7 @@ namespace BCS
                 Errormsg.Text = "select a bin";
                 ErrorTxt.Visibility = Visibility.Visible;
                 ErrorTxt.Background = new SolidColorBrush(Colors.Gray);
-                ReClassify.Visibility = Visibility.Collapsed;
+              //  ReClassify.Visibility = Visibility.Collapsed;
                 QuickReClassify.Visibility = Visibility.Collapsed;
 
             }
@@ -541,9 +542,13 @@ namespace BCS
             {
                 ButRow1.Children.Clear();
                 ButRow1.Visibility = Visibility.Visible;
-                logger.Info("new item");
+                ShowClassifier();
+                Button but = new Button()
+                {
+                   Content = "Next Day Work \n (" + item.Category.Name + ")", Height = ButtonHeight, Width = ButtonWidth, Visibility = Visibility.Visible
+                };
                 item = new Item() { BarCode = barcode, CustID = 0, ID = -1, CreationDate = DateTime.Now };
-                Button but = new Button() { Content = "Next Day Work", Height = ButtonHeight, Width = ButtonWidth, Visibility = Visibility.Visible };
+                
                 but.Margin = new Thickness(0, 5, 5, 5);
                 //             but.Click += new RoutedEventHandler(but_Click);
                 item.Category = vm.CleaningCats.Where(c => c.ID == 11).Single();
@@ -591,16 +596,7 @@ namespace BCS
             }
             else
             {
-                if (vm.activeUser != null && vm.activeUser.Level == 1)
-                {
-                    if (item.User != null)
-                    {
-                        userName.Text = item.User.Name;
-                        userName.Visibility = Visibility.Visible;
-                        ClassedDate.Text = item.CreationDate.Value.ToShortDateString() + " " + item.CreationDate.Value.ToShortTimeString();
-                        ClassedDate.Visibility = Visibility.Visible;
-                    }
-                }
+                ShowClassifier();
                 //known item but first check if it is unknown as it needs to be categorized before proceeding
                 ButRow1.Children.Clear();
                 ButRow2.Children.Clear();
@@ -666,7 +662,23 @@ namespace BCS
 
 
         }
-
+        void ShowClassifier()
+        {
+            if (vm.activeUser != null && vm.activeUser.Level == 1)
+            {
+                userName.Text = "unknown";
+                userName.Visibility = Visibility.Visible;
+                ClassedDate.Text = "unknown";
+                ClassedDate.Visibility = Visibility.Visible;
+                if (item.User != null)
+                {
+                    userName.Text = item.User.Name;
+                    userName.Visibility = Visibility.Visible;
+                    ClassedDate.Text = item.CreationDate.Value.ToShortDateString() + " " + item.CreationDate.Value.ToShortTimeString();
+                    ClassedDate.Visibility = Visibility.Visible;
+                }
+            }
+        }
         void but_Click(object sender, RoutedEventArgs e)
         {
 
@@ -690,8 +702,7 @@ namespace BCS
             
             if (vm.QuickReClassifyButtonText == "Quick Reclassify Off")    //if in QuickClassy mode then do not wait for feedback
             {
-                if (vm.activeUser != null )
-                    item.User = vm.activeUser;
+                
                 vm.SaveItem(item);
                 ClearItemFields();
                 CustomerName.Text = "";
@@ -761,8 +772,7 @@ namespace BCS
             {
                 if (item.Category.ID != 11)     //do not save next day info as next time the item might NOT be next day
                 {
-                    if (vm.activeUser != null)
-                        item.User = vm.activeUser;
+                    
                     vm.SaveItem(item);
                 }
             }
